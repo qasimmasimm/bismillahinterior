@@ -1,12 +1,12 @@
 const products = [
   {
     id: "spc-01",
-    title: "Oak Wood SPC Flooring",
-    category: "SPC Flooring",
+    title: "UV Sheets for Bed and Media Walls ",
+    category: "PVC UV Sheets",
     images: [
-      "https://images.unsplash.com/photo-1581858726788-75bc0f6a952d?auto=format&fit=crop&w=700&q=75&fm=webp",
-      "https://images.unsplash.com/photo-1564078516393-cf04bd966897?auto=format&fit=crop&w=700&q=75&fm=webp",
-      "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=700&q=75&fm=webp",
+      "/public/images/uv1.jpeg",
+      "/public/images/uv2.jpeg",
+      "/public/images/uv3.jpeg",
     ],
   },
   {

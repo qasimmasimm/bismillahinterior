@@ -1,6 +1,8 @@
 :root {
-  --font-heading: 'Cormorant Garamond', Georgia, serif;
-  --font-body: 'Montserrat', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-heading: "Cormorant Garamond", Georgia, serif;
+  --font-body:
+    "Montserrat", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    sans-serif;
   --color-gold: #c5a059;
   --color-gold-dark: #ad8144;
   --color-gold-light: #d8b36a;
@@ -14,21 +16,7 @@
 }
 
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: #f1ede6;
-}
-
-::-webkit-scrollbar-thumb {
-  background: #c5a059;
-  border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: #ad8144;
+  width: 0px;
 }
 
 body {
@@ -41,16 +29,39 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-h1, h2, h3, h4, h5, h6,
-.h1, .h2, .h3, .h4, .h5, .h6,
-.display-1, .display-2, .display-3, .display-4, .display-5, .display-6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6,
+.display-1,
+.display-2,
+.display-3,
+.display-4,
+.display-5,
+.display-6 {
   font-family: var(--font-heading);
   font-weight: 600;
   letter-spacing: -0.01em;
   color: #1a1a1a;
 }
 
-p, span, a, button, input, select, textarea, label, small {
+p,
+span,
+a,
+button,
+input,
+select,
+textarea,
+label,
+small {
   font-family: var(--font-body);
 }
 .footer-social {
@@ -2142,5 +2153,92 @@ p, span, a, button, input, select, textarea, label, small {
     font-size: 11px;
     letter-spacing: 0.12em;
     text-align: center;
+  }
+}
+
+/* login */
+
+.login-form-box {
+  width: 40vw;
+  height: 60vh;
+  margin-left: 9vw !important;
+  background: rgba(252, 250, 246, 0.96);
+  border-radius: 0.75rem;
+  font-family: var(--font-body);
+}
+
+.login-title,
+.login-heading {
+  font-family: var(--font-heading);
+  color: var(--color-dark);
+}
+
+.login-title {
+  font-size: 2rem;
+  font-weight: 600;
+}
+
+.login-subtitle {
+  color: var(--color-text-muted);
+  font-size: 0.8rem;
+}
+
+.login-brand {
+  color: var(--color-gold-dark);
+  letter-spacing: 2px;
+  font-family: var(--font-body);
+  font-size: 0.65rem;
+}
+
+.login-label {
+  color: var(--color-text-main);
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.login-input {
+  height: 38px;
+  font-size: 0.78rem;
+  border: 1px solid var(--color-border);
+  border-radius: 0.375rem;
+  font-family: var(--font-body);
+}
+
+.login-input:focus {
+  border-color: var(--color-gold);
+  box-shadow: 0 0 0 0.15rem rgba(197, 160, 89, 0.12);
+}
+
+.login-button {
+  height: 38px;
+  border-radius: 0.375rem;
+  background: var(--color-dark);
+  color: #fff;
+  border: 0;
+  font-size: 0.78rem;
+  font-family: var(--font-body);
+}
+
+.login-button:hover {
+  background: var(--color-gold-dark);
+  color: #fff;
+}
+
+.login-forgot,
+.login-create {
+  font-size: 0.72rem;
+  color: var(--color-text-muted);
+}
+
+.login-create span {
+  color: var(--color-gold-dark);
+  cursor: pointer;
+}
+
+@media (max-width: 767px) {
+  .login-form-box {
+    width: calc(100vw - 30px);
+    height: auto;
+    margin-left: 15px !important;
   }
 }

@@ -12,6 +12,9 @@ const Projects = lazy(() => import("./pages/projects"));
 const Products = lazy(() => import("./pages/products"));
 const ProjectDetails = lazy(() => import("./pages/projectdetails"));
 const ProductDetails = lazy(() => import("./pages/productsdetails"));
+const Login=lazy(()=>import('./pages/auth/login'));
+const Register=lazy(()=>import('./pages/auth/signup'))
+
 
 function App() {
   return (
@@ -45,7 +48,10 @@ function App() {
           <Route path="contact" element={<Contact />} />
           <Route path="*" element={<Home />} />
         </Route>
+         <Route path="/login" element={<Login />} />
+         <Route path="/register" element={<Register />} />
       </Routes>
+
     </Suspense>
   );
 }
