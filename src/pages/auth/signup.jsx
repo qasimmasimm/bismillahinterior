@@ -22,13 +22,6 @@ export default function Register() {
 
   const onSubmit = async (data) => {
     try {
-    //   const formData = new FormData();
-
-    //   formData.append("name", data.name);
-    //   formData.append("email", data.email);
-    //   formData.append("phone", data.phone);
-    //   formData.append("password", data.password);
-
       const res = await fetch(`${API_URL}/auth/register`, {
         method: "POST",
         headers: {

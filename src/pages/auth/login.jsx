@@ -73,130 +73,149 @@ export default function Login() {
   };
 
   return (
-    <div className="position-relative vh-100 vw-100 overflow-hidden">
-      <img
-        src="/images/login-banner.webp"
-        alt="Bismillah Interiors"
-        className="position-absolute top-0 start-0 w-100 h-100 object-fit-cover"
-      />
-      <div className="position-absolute top-50 start-0 translate-middle-y ms-5">
-        <div
-          className="bg-light shadow-sm"
-          style={{
-            width: "35vw",
-            height: "70vh",
-            borderRadius: "20px",
-          }}
-        >
-          <div className="h-100 p-4 p-lg-5 d-flex flex-column justify-content-center">
-            <h2
-              className="mb-1 fw-semibold"
-              style={{
-                fontFamily: "var(--font-heading)",
-                color: "var(--color-dark)",
-                fontSize: "2rem",
-              }}
-            >
-              Welcome Back
-            </h2>
+    <div className="position-relative min-vh-100 overflow-hidden">
 
-            <p
-              className="text-muted mb-4"
-              style={{
-                fontFamily: "var(--font-body)",
-                fontSize: "0.8rem",
-              }}
-            >
-              Sign in to continue to your account
-            </p>
+  <img
+    src="/images/login-banner.webp"
+    alt="Bismillah Interiors"
+    className="position-absolute top-0 start-0 w-100 h-100 object-fit-cover"
+  />
 
-            <Form onSubmit={handleSubmit(onSubmit)} noValidate>
-              <div className="mb-3">
-                <label
-                  htmlFor="email"
-                  className="form-label mb-1 fw-medium small"
-                >
-                  Email Address
-                </label>
+  <div className="position-relative min-vh-100 d-flex align-items-center">
+    <div className="container-fluid">
+      <div className="row justify-content-start">
 
-                <input
-                  id="email"
-                  type="email"
-                  className="form-control form-control-sm"
-                  {...register("email", {
-                    required: "Email is required",
-                    pattern: {
-                      value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                      message: "Enter a valid email",
-                    },
-                  })}
-                />
+        <div className="col-12 col-sm-10 col-md-7 col-lg-5 col-xl-4 ms-0 ms-md-4 ms-lg-5">
 
-                {errors.email && (
-                  <small className="text-danger">{errors.email.message}</small>
-                )}
-              </div>
+          <div className="bg-light shadow-sm rounded-4 p-4 p-md-5 my-4">
 
-              <div className="mb-2">
-                <label
-                  htmlFor="pass"
-                  className="form-label mb-1 fw-medium small"
-                >
-                  Password
-                </label>
+            <div className="d-flex flex-column justify-content-center">
 
-                <input
-                  id="pass"
-                  type="password"
-                  className="form-control form-control-sm"
-                  {...register("password", {
-                    required: "Password required",
-                    minLength: {
-                      value: 8,
-                      message: "At least 8 characters",
-                    },
-                  })}
-                />
-
-                {errors.password && (
-                  <small className="text-danger">
-                    {errors.password.message}
-                  </small>
-                )}
-              </div>
-
-              <button
-                type="submit"
-                className="btn btn-sm rounded-2 w-100 mt-3 text-white"
+              <h2
+                className="mb-1 fw-semibold"
                 style={{
-                  backgroundColor: "var(--color-dark)",
+                  fontFamily: "var(--font-heading)",
+                  color: "var(--color-dark)",
+                  fontSize: "2rem",
+                }}
+              >
+                Welcome Back
+              </h2>
+
+              <p
+                className="text-muted mb-4"
+                style={{
+                  fontFamily: "var(--font-body)",
+                  fontSize: "0.8rem",
+                }}
+              >
+                Sign in to continue to your account
+              </p>
+
+              <Form onSubmit={handleSubmit(onSubmit)} noValidate>
+
+                {/* EMAIL */}
+                <div className="mb-3">
+                  <label
+                    htmlFor="email"
+                    className="form-label mb-1 fw-medium small"
+                  >
+                    Email Address
+                  </label>
+
+                  <input
+                    id="email"
+                    type="email"
+                    className="form-control form-control-sm"
+                    {...register("email", {
+                      required: "Email is required",
+                      pattern: {
+                        value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                        message: "Enter a valid email",
+                      },
+                    })}
+                  />
+
+                  {errors.email && (
+                    <small className="text-danger">
+                      {errors.email.message}
+                    </small>
+                  )}
+                </div>
+
+                {/* PASSWORD */}
+                <div className="mb-2">
+                  <label
+                    htmlFor="pass"
+                    className="form-label mb-1 fw-medium small"
+                  >
+                    Password
+                  </label>
+
+                  <input
+                    id="pass"
+                    type="password"
+                    className="form-control form-control-sm"
+                    {...register("password", {
+                      required: "Password required",
+                      minLength: {
+                        value: 8,
+                        message: "At least 8 characters",
+                      },
+                    })}
+                  />
+
+                  {errors.password && (
+                    <small className="text-danger">
+                      {errors.password.message}
+                    </small>
+                  )}
+                </div>
+
+                {/* SUBMIT */}
+                <button
+                  type="submit"
+                  className="btn btn-sm rounded-2 w-100 mt-3 text-white"
+                  style={{
+                    backgroundColor: "var(--color-dark)",
+                    fontFamily: "var(--font-body)",
+                  }}
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? "Signing in..." : "Sign in"}
+                </button>
+
+              </Form>
+
+              <p
+                className="text-center text-muted small mt-3 mb-0"
+                style={{
                   fontFamily: "var(--font-body)",
                 }}
-                disabled={isSubmitting}
               >
-                {isSubmitting ? "Signing in..." : "Sign in"}
-              </button>
-            </Form>
+                New here?{" "}
 
-            <p
-              className="text-center text-muted small mt-3 mb-0"
-              style={{ fontFamily: "var(--font-body)" }}
-            >
-              New here?{" "}
-              <small
-                className="fw-semibold text-decoration-underline"
-                style={{
-                  //   color: "var(--color-gold-dark)",
-                  cursor: "pointer",
-                }}
-                onClick={() => navigate("/register")}
-              >
-                Create an Account
-              </small>
-            </p>
+                <small
+                  className="fw-semibold text-decoration-underline"
+                  style={{
+                    cursor: "pointer",
+                  }}
+                  onClick={() => navigate("/register")}
+                >
+                  Create an Account
+                </small>
+              </p>
+
+            </div>
+
           </div>
+
         </div>
+
       </div>
     </div>
+  </div>
+
+</div>
   );
 }
