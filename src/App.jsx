@@ -1,6 +1,8 @@
-import { lazy, Suspense } from "react";
-import { Route, Routes } from "react-router-dom";
+import { lazy, Suspense,useContext } from "react";
+import { Route, Routes,useNavigate } from "react-router-dom";
 import Layout from "./layout/minlayout";
+import {getStoredUser} from "./utils/cookie";
+import { UserContext } from "./context/usercontext";
 
 const Home = lazy(() => import("./pages/home"));
 const About = lazy(() => import("./pages/aboutus"));
@@ -12,11 +14,26 @@ const Projects = lazy(() => import("./pages/projects"));
 const Products = lazy(() => import("./pages/products"));
 const ProjectDetails = lazy(() => import("./pages/projectdetails"));
 const ProductDetails = lazy(() => import("./pages/productsdetails"));
-const Login=lazy(()=>import('./pages/auth/login'));
-const Register=lazy(()=>import('./pages/auth/signup'))
+const Login = lazy(() => import("./pages/auth/login"));
+const Register = lazy(() => import("./pages/auth/signup"));
 
+
+const Adminlayout = lazy(() => import("./admin/layout/adminlayout"));
+const Dashboard = lazy(() => import("./admin/pages/dashboard"));
+const Articles = lazy(() => import("./admin/pages/articles"));
+const AddArticles = lazy(() => import("./admin/pages/addarticles"));
+const AddCategories = lazy(() => import("./admin/pages/addcategories"));
+const AddProjects = lazy(() => import("./admin/pages/projects"));
+const ManageProjects = lazy(() => import("./admin/pages/manageprojects"));
 
 function App() {
+    const { user: contextUser } = useContext(UserContext);
+  const user = contextUser || getStoredUser();
+
+  console.log("User from context or cookie:", user)
+
+  const Navigate = useNavigate();
+
   return (
     <Suspense
       fallback={
@@ -48,10 +65,30 @@ function App() {
           <Route path="contact" element={<Contact />} />
           <Route path="*" element={<Home />} />
         </Route>
-         <Route path="/login" element={<Login />} />
-         <Route path="/register" element={<Register />} />
-      </Routes>
 
+
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+
+
+        <Route
+          path="/admin"
+          element={
+            user?.role === "admin" ? (
+              <Adminlayout />
+            ) : (
+              <Navigate to="/login" replace />
+            )
+          }
+        >
+        <Route index element={<Dashboard />} />
+        <Route path="articles" element={<Articles />} />
+        <Route path="articles/add" element={<AddArticles />} />
+        <Route path="categories/add" element={<AddCategories />} />
+        <Route path="projects/add" element={<AddProjects />} />
+        <Route path="manageprojects" element={<ManageProjects />} />
+        </Route>
+      </Routes>
     </Suspense>
   );
 }

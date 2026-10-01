@@ -6,7 +6,7 @@
  * Get a cookie value by name.
  * Robustly parses document.cookie, trims whitespace, handles '=' in values,
  * and decodes URL-encoded values.
- * @param {string} name 
+ * @param {string} name
  * @returns {string|null}
  */
 export function getCookie(name) {
@@ -36,10 +36,10 @@ export function getCookie(name) {
 
 /**
  * Set a cookie with standard attributes.
- * @param {string} name 
- * @param {string} value 
- * @param {number} [days=7] 
- * @param {string} [path="/"] 
+ * @param {string} name
+ * @param {string} value
+ * @param {number} [days=7]
+ * @param {string} [path="/"]
  */
 export function setCookie(name, value, days = 7, path = "/") {
   if (typeof document === "undefined") return;
@@ -53,8 +53,8 @@ export function setCookie(name, value, days = 7, path = "/") {
 
 /**
  * Remove a cookie.
- * @param {string} name 
- * @param {string} [path="/"] 
+ * @param {string} name
+ * @param {string} [path="/"]
  */
 export function removeCookie(name, path = "/") {
   if (typeof document === "undefined") return;
@@ -93,7 +93,9 @@ export function getStoredUser() {
   const userCookie = getCookie("user");
   if (userCookie) {
     try {
-      return typeof userCookie === "string" ? JSON.parse(userCookie) : userCookie;
+      return typeof userCookie === "string"
+        ? JSON.parse(userCookie)
+        : userCookie;
     } catch (e) {
       console.error("Failed to parse user cookie:", e);
     }
@@ -115,8 +117,8 @@ export function getStoredUser() {
 
 /**
  * Store auth token and user in both cookies (7 days) and localStorage.
- * @param {string} token 
- * @param {object} user 
+ * @param {string} token
+ * @param {object} user
  */
 export function setAuth(token, user) {
   if (token) {

@@ -14,7 +14,10 @@ import {
   FaTools,
   FaWhatsapp,
 } from "react-icons/fa";
-
+import { useContext } from "react";
+import { getStoredUser,clearAuth } from "../utils/cookie";
+import { UserContext } from "../context/usercontext";
+import {useNavigate} from "react-router-dom";
 const banners = [
   {
     image:
@@ -154,6 +157,16 @@ function SectionHeading({ eyebrow, title, text, light = false }) {
 }
 
 export default function Home() {
+      const { user: contextUser, setUser } = useContext(UserContext);
+    const user = contextUser || getStoredUser();
+      const navigate=useNavigate();
+
+    const logout = () => {
+    clearAuth();
+    setUser(null);
+    alert("Admin Logout Successfully!");
+    navigate("/login");
+  };
   return (
     <div className="home-page">
       <SEO
@@ -210,6 +223,9 @@ export default function Home() {
             </Carousel.Item>
           ))}
         </Carousel>
+      </section>
+      <section>
+        <button onClick={logout}>logout</button>
       </section>
 
       <section className="home-section about-section" id="about">
