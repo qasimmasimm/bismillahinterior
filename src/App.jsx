@@ -30,8 +30,6 @@ function App() {
     const { user: contextUser } = useContext(UserContext);
   const user = contextUser || getStoredUser();
 
-  console.log("User from context or cookie:", user)
-
   const Navigate = useNavigate();
 
   return (

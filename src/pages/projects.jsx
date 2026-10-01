@@ -2,9 +2,14 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import projects from "../data/projectsdata";
 import SEO from "../components/seo";
+import {useContext} from 'react'
+import { ProjectContext } from "../context/projectcontext";
+import { ProjectCategoryContext } from "../context/projectcategorycontext";
 
 export default function Projects() {
     const [activeFilter, setActiveFilter] = useState("All");
+    const{projectCategory} = useContext(ProjectCategoryContext);
+    console.log("Project Category from context:", projectCategory); // Debugging line
 
     const filters = ["All", "Residential", "Commercial", "Office"];
 

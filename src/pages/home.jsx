@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
 import { Carousel } from "react-bootstrap";
 import SEO from "../components/seo";
+import carousel from "react-bootstrap/Carousel";
+import { useNavigate } from "react-router-dom";
 import {
   FaArrowRight,
   FaCheck,
@@ -15,9 +17,11 @@ import {
   FaWhatsapp,
 } from "react-icons/fa";
 import { useContext } from "react";
-import { getStoredUser,clearAuth } from "../utils/cookie";
+import { getStoredUser, clearAuth } from "../utils/cookie";
 import { UserContext } from "../context/usercontext";
-import {useNavigate} from "react-router-dom";
+import { ProjectContext } from "../context/projectcontext";
+import { ProductsContext } from "../context/aticlescontext";
+
 const banners = [
   {
     image:
@@ -73,36 +77,36 @@ const services = [
   },
 ];
 
-const products = [
-  {
-    image:
-      "https://images.unsplash.com/photo-1618220179428-22790b461013?auto=format&fit=crop&w=600&q=75&fm=webp",
-    title: "Wood Texture Wall Panel",
-    category: "Wall Panels",
-    id: "wpc-imported-01",
-  },
-  {
-    image:
-      "https://images.unsplash.com/photo-1615529162924-f8605388461d?auto=format&fit=crop&w=600&q=75&fm=webp",
-    title: "Modern Decorative Panel",
-    category: "Wall Panels",
-    id: "wpc-solid-01",
-  },
-  {
-    image:
-      "https://images.unsplash.com/photo-1600607688969-a5bfcd646154?auto=format&fit=crop&w=600&q=75&fm=webp",
-    title: "Textured Interior Finish",
-    category: "Wallpapers",
-    id: "wallpaper-01",
-  },
-  {
-    image:
-      "https://images.unsplash.com/photo-1600210491892-03d54c0aaf87?auto=format&fit=crop&w=600&q=75&fm=webp",
-    title: "Oak Wood SPC Flooring",
-    category: "SPC Flooring",
-    id: "spc-01",
-  },
-];
+// const products = [
+//   {
+//     image:
+//       "https://images.unsplash.com/photo-1618220179428-22790b461013?auto=format&fit=crop&w=600&q=75&fm=webp",
+//     title: "Wood Texture Wall Panel",
+//     category: "Wall Panels",
+//     id: "wpc-imported-01",
+//   },
+//   {
+//     image:
+//       "https://images.unsplash.com/photo-1615529162924-f8605388461d?auto=format&fit=crop&w=600&q=75&fm=webp",
+//     title: "Modern Decorative Panel",
+//     category: "Wall Panels",
+//     id: "wpc-solid-01",
+//   },
+//   {
+//     image:
+//       "https://images.unsplash.com/photo-1600607688969-a5bfcd646154?auto=format&fit=crop&w=600&q=75&fm=webp",
+//     title: "Textured Interior Finish",
+//     category: "Wallpapers",
+//     id: "wallpaper-01",
+//   },
+//   {
+//     image:
+//       "https://images.unsplash.com/photo-1600210491892-03d54c0aaf87?auto=format&fit=crop&w=600&q=75&fm=webp",
+//     title: "Oak Wood SPC Flooring",
+//     category: "SPC Flooring",
+//     id: "spc-01",
+//   },
+// ];
 
 const projects = [
   {
@@ -157,16 +161,18 @@ function SectionHeading({ eyebrow, title, text, light = false }) {
 }
 
 export default function Home() {
-      const { user: contextUser, setUser } = useContext(UserContext);
-    const user = contextUser || getStoredUser();
-      const navigate=useNavigate();
+  const { user: contextUser, setUser } = useContext(UserContext);
+  const user = contextUser || getStoredUser();
+  const navigate = useNavigate();
+  const { Project } = useContext(ProjectContext);
+  const { products } = useContext(ProductsContext);
 
-    const logout = () => {
-    clearAuth();
-    setUser(null);
-    alert("Admin Logout Successfully!");
-    navigate("/login");
-  };
+  const featuredProjects = Project?.slice(0, 4) || [];
+  const featuredProducts = products?.slice(0, 4) || [];
+  const API_URL = import.meta.env.VITE_API_URL;
+
+  // console.log("Current Project from Context:", Project);
+
   return (
     <div className="home-page">
       <SEO
@@ -224,10 +230,6 @@ export default function Home() {
           ))}
         </Carousel>
       </section>
-      <section>
-        <button onClick={logout}>logout</button>
-      </section>
-
       <section className="home-section about-section" id="about">
         <div className="container">
           <div className="row align-items-center g-5">
@@ -328,7 +330,10 @@ export default function Home() {
                     <h3>{service.title}</h3>
                     <p>{service.text}</p>
 
-                    <Link to={`/categories/${service.slug}`} className="service-link">
+                    <Link
+                      to={`/categories/${service.slug}`}
+                      className="service-link"
+                    >
                       Explore
                       <FaArrowRight />
                     </Link>
@@ -443,27 +448,55 @@ export default function Home() {
           />
 
           <div className="row g-4">
-            {products.map((product) => (
-              <div className="col-sm-6 col-lg-3" key={product.title}>
+            {featuredProducts.map((product) => (
+              <div className="col-sm-6 col-lg-3" key={product._id}>
                 <article className="product-card">
                   <div className="product-image-wrap">
-                    <img
-                      src={product.image}
-                      alt={product.title}
-                      className="product-image"
-                      loading="lazy"
-                      decoding="async"
-                      width="400"
-                      height="330"
-                    />
+                    {product.images?.length > 0 ? (
+                      <Carousel
+                        indicators={false}
+                        controls={product.images.length > 1}
+                        interval={null}
+                      >
+                        {product.images.map((image, index) => (
+                          <Carousel.Item key={`${product._id}-${index}`}>
+                            <img
+                              src={`${API_URL}/${image.replaceAll("\\", "/")}`}
+                              alt={`${product.name} ${index + 1}`}
+                              className="product-image"
+                              loading={index === 0 ? "eager" : "lazy"}
+                              decoding="async"
+                              style={{
+                                width: "100%",
+                                height: "330px",
+                                objectFit: "contain",
+                              }}
+                            />
+                          </Carousel.Item>
+                        ))}
+                      </Carousel>
+                    ) : (
+                      <img
+                        src="https://via.placeholder.com/400x330?text=No+Image"
+                        alt="No product image available"
+                        className="product-image"
+                        width="400"
+                        height="330"
+                      />
+                    )}
 
-                    <span className="product-category">{product.category}</span>
+                    <span className="product-category">
+                      {product.category?.title}
+                    </span>
                   </div>
 
                   <div className="product-body">
-                    <h3>{product.title}</h3>
+                    <h3>{product.name}</h3>
 
-                    <Link to={`/products/${product.id}`} className="product-link">
+                    <Link
+                      to={`/products/${product._id}`}
+                      className="product-link"
+                    >
                       View Product
                       <FaArrowRight />
                     </Link>
@@ -491,37 +524,41 @@ export default function Home() {
           />
 
           <div className="row g-4">
-            {projects.map((project, index) => (
-              <div className="col-md-6 col-lg-4" key={project.title}>
-                <article className="project-card">
-                  <div className="project-image-wrap">
+            {featuredProjects.map((project) => (
+              <div className="col-12 col-md-6 col-lg-3" key={project._id}>
+                <Link
+                  to={`/projects/${project._id}`}
+                  className="text-decoration-none"
+                >
+                  <div className="card border-0 h-100 overflow-hidden">
                     <img
-                      src={project.image}
+                      src={`${API_URL}/${project.cover}`}
                       alt={project.title}
-                      className="project-image"
-                      loading="lazy"
-                      decoding="async"
-                      width="500"
-                      height="430"
+                      className="w-100 object-fit-cover"
+                      style={{ height: "320px" }}
                     />
 
-                    <div className="project-overlay">
-                      <span>0{index + 1}</span>
-                      <Link to={`/projects/${project.id}`}>
-                        View Project
-                        <FaArrowRight />
-                      </Link>
+                    <div className="pt-3">
+                      <small
+                        className="text-uppercase"
+                        style={{ color: "var(--color-gold)" }}
+                      >
+                        {project.category?.name}
+                      </small>
+
+                      <h5 className="text-dark mt-1 mb-1">{project.title}</h5>
+
+                      {project.location && (
+                        <small className="text-muted">{project.location}</small>
+                      )}
                     </div>
                   </div>
-
-                  <div className="project-body">
-                    <span>{project.category}</span>
-                    <h3>{project.title}</h3>
-                  </div>
-                </article>
+                </Link>
               </div>
             ))}
           </div>
+
+          <div className="text-center mt-5"></div>
 
           <div className="section-button">
             <Link to="/projects" className="text-link">
