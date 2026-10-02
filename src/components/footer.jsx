@@ -6,8 +6,14 @@ import {
   FaPhoneAlt,
 } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import { FaUser } from "react-icons/fa";
+import { useContext } from "react";
+import { UserContext } from "../context/usercontext";
+import { getStoredUser } from "../utils/cookie";
 
 export default function Footer() {
+  const { user: contextUser } = useContext(UserContext);
+  const user = contextUser || getStoredUser();
   const whatsappNumber = "923354496040";
 
   return (
@@ -16,7 +22,9 @@ export default function Footer() {
         <div className="row g-4">
           {/* Brand */}
           <div className="col-lg-4 col-md-6">
-            <h4 className="fw-semibold mb-1" style={{color:"#c5a059"}}>BISMILLAH</h4>
+            <h4 className="fw-semibold mb-1" style={{ color: "#c5a059" }}>
+              BISMILLAH
+            </h4>
             <small className="text-uppercase text-secondary">Interiors</small>
 
             <p className="text-secondary mt-3 mb-0">
@@ -54,6 +62,9 @@ export default function Footer() {
                 aria-label="WhatsApp"
               >
                 <FaWhatsapp />
+              </a>
+              <a href="/login" className="footer-social">
+                <FaUser />
               </a>
             </div>
           </div>
