@@ -88,7 +88,7 @@ I would like to know more about this product.`;
         description={product.description}
       />
 
-      <div className="container py-4 py-lg-5">
+      <div className="container-fluid py-4 py-lg-5">
         <nav aria-label="breadcrumb" className="mb-4">
           <ol className="breadcrumb small mb-0">
             <li className="breadcrumb-item">
@@ -250,7 +250,12 @@ I would like to know more about this product.`;
               Interested in this product?
             </p>
 
-            <h2 className="fw-semibold mb-3">Talk to Bismillah Interiors</h2>
+            <h2
+              className="fw-semibold mb-3 "
+              style={{ color: "var(--color-gold-light)" }}
+            >
+              Talk to Bismillah Interiors
+            </h2>
 
             <p className="text-white-50 mb-4 mx-auto">
               Contact us on WhatsApp for availability, pricing, specifications,

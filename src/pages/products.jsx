@@ -55,7 +55,7 @@ const API_URL=import.meta.env.VITE_API_URL
               <img
                 src={`${API_URL}/${images[active]}`}
                 alt={productTitle}
-                className="w-100 h-100 object-fit-cover"
+                className="w-100 h-100 object-fit-contain"
               />
             ) : (
               <div

@@ -427,12 +427,12 @@ small {
 }
 
 .home-btn {
-  min-height: 50px;
+  min-height: 20px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 10px;
-  padding: 13px 25px;
+  padding: 10px 25px;
   border-radius: 50px;
   font-size: 13px;
   font-weight: 600;
@@ -1671,12 +1671,12 @@ small {
 }
 
 .project-hero-image-wrap {
-  min-height: 620px;
+  min-height: 320px;
 }
 
 .project-hero-image {
   height: 100%;
-  min-height: 620px;
+  min-height: 320px;
   object-fit: cover;
 }
 
@@ -2279,8 +2279,6 @@ small {
   width: 280px !important;
 }
 
-
-
 .admin-brand-title {
   font-family: var(--font-heading);
   font-size: 25px;
@@ -2382,7 +2380,7 @@ small {
 .admin-sidebar-accordion .accordion-body {
   padding: 5px 0 0;
 }
-.admin-sidebar-accordion::-webkit-scrollbar{
+.admin-sidebar-accordion::-webkit-scrollbar {
   width: 6px;
   color: rgba(255, 255, 255, 0.4);
 }
@@ -2421,11 +2419,7 @@ small {
 }
 
 .admin-sidebar-image-overlay {
-  background: linear-gradient(
-    180deg,
-    transparent,
-    rgba(0, 0, 0, 0.88)
-  );
+  background: linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.88));
 }
 
 .admin-sidebar-image-small {
@@ -2485,4 +2479,4 @@ small {
   .admin-mobile-offcanvas {
     width: 280px !important;
   }
-} 
+}

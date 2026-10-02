@@ -1,18 +1,35 @@
 import { Link, useParams } from "react-router-dom";
-import projects from "../data/projectsdata";
 import SEO from "../components/seo";
+import { ProjectContext } from "../context/projectcontext";
+import { useContext } from "react";
 
 export default function ProjectDetails() {
   const { id } = useParams();
-  const project = projects.find((item) => item.id === id);
+
+  const API_URL = import.meta.env.VITE_API_URL;
+
+  const { Project } = useContext(ProjectContext);
+
+  const project = Project?.find((item) => String(item._id) === String(id));
+
+  const getImageUrl = (image) => {
+    if (!image) return "";
+
+    return `${API_URL.replace(/\/$/, "")}/${image
+      .replace(/^\//, "")
+      .replaceAll("\\", "/")}`;
+  };
 
   if (!project) {
     return (
       <main className="project-page project-not-found">
         <div className="project-container project-center">
           <span className="project-eyebrow">Portfolio</span>
+
           <h1>Project Not Found</h1>
+
           <p>The project you are looking for is not available.</p>
+
           <Link to="/projects" className="project-button">
             View Projects <span>→</span>
           </Link>
@@ -21,75 +38,97 @@ export default function ProjectDetails() {
     );
   }
 
-  const otherProjects = projects
-    .filter((item) => item.id !== project.id)
-    .slice(0, 3);
+  const gallery = Array.isArray(project.gallery) ? project.gallery : [];
 
-  const gallery = project.gallery || [];
+  const projectTitle = project.title || project.name || "Project";
+
+  const projectOverview = project.overview || project.description || "";
+
+  const projectCategory =
+    typeof project.category === "object"
+      ? project.category?.title || project.category?.name || "Architecture"
+      : project.category || "Architecture";
+
+  const projectLocation = project.location || "Lahore";
+
+  const projectScope = project.scope || "—";
 
   return (
     <main className="project-page">
       <SEO
-        title={`${project.title} - ${project.location || "Lahore"}`}
-        description={`${project.overview || `Interior design project ${project.title} by Bismillah Interiors in ${project.location || "Lahore"}.`}`}
-        image={project.cover}
+        title={`${projectTitle} - ${projectLocation}`}
+        description={
+          projectOverview ||
+          `Interior design project ${projectTitle} by Bismillah Interiors in ${projectLocation}.`
+        }
+        image={getImageUrl(project.cover)}
         schema={{
           "@context": "https://schema.org",
           "@type": "CreativeWork",
-          "name": project.title,
-          "headline": project.title,
-          "description": project.overview,
-          "image": project.cover,
-          "locationCreated": {
+          name: projectTitle,
+          headline: projectTitle,
+          description: projectOverview,
+          image: getImageUrl(project.cover),
+          locationCreated: {
             "@type": "Place",
-            "name": project.location || "Lahore, Pakistan"
+            name: projectLocation,
           },
-          "creator": {
+          creator: {
             "@type": "Organization",
-            "name": "Bismillah Interiors"
-          }
+            name: "Bismillah Interiors",
+          },
         }}
       />
-      {/* Hero */}
+
       <section className="project-hero">
         <div className="project-container project-hero-grid">
           <div className="project-hero-image-wrap">
-            <img
-              src={project.cover}
-              alt={project.title}
-              className="project-hero-image"
-            />
+            {project.cover ? (
+              <img
+                src={getImageUrl(project.cover)}
+                alt={projectTitle}
+                className="project-hero-image"
+              />
+            ) : (
+              <div className="project-hero-image-wrap d-flex align-items-center justify-content-center">
+                <span>No project image available</span>
+              </div>
+            )}
           </div>
 
           <div className="project-hero-info">
             <div>
               <div className="project-label-line">
-                <span>{project.category || "Architecture"}</span>
+                <span>{projectCategory}</span>
                 <i />
               </div>
 
-              <h1>{project.title}</h1>
+              <h1>{projectTitle}</h1>
 
-              <p className="project-location">
-                {project.location || "Pakistan"}
-              </p>
-             <div className="project-overview-copy">
-              <p>{project.overview}</p>
-            </div>
+              <p className="project-location">{projectLocation}</p>
+
+              <div className="project-overview-copy">
+                <p>{projectOverview}</p>
+              </div>
             </div>
 
             <div className="project-meta">
               <div>
                 <span>Category</span>
-                <strong>{project.category || "—"}</strong>
+
+                <strong>{projectCategory}</strong>
               </div>
+
               <div>
                 <span>Scope</span>
-                <strong>{project.scope || "—"}</strong>
+
+                <strong>{projectScope}</strong>
               </div>
+
               <div>
                 <span>Location</span>
-                <strong>{project.location || "—"}</strong>
+
+                <strong>{projectLocation}</strong>
               </div>
             </div>
           </div>
@@ -107,14 +146,14 @@ export default function ProjectDetails() {
           <div className="project-overview-grid">
             <div>
               <h2>
-                {project.overview
+                {projectOverview
                   ? "A thoughtful approach to contemporary living."
                   : "Designed with intention."}
               </h2>
             </div>
 
             <div className="project-overview-copy">
-              <p>{project.overview}</p>
+              <p>{projectOverview}</p>
             </div>
           </div>
         </div>
@@ -133,8 +172,8 @@ export default function ProjectDetails() {
                   key={`${image}-${index}`}
                 >
                   <img
-                    src={image}
-                    alt={`${project.title} - ${index + 1}`}
+                    src={getImageUrl(image)}
+                    alt={`${projectTitle} - ${index + 1}`}
                     loading={index > 1 ? "lazy" : "eager"}
                   />
                 </figure>
@@ -144,14 +183,15 @@ export default function ProjectDetails() {
         </section>
       )}
 
-      {/* Service row */}
+      {/* Service */}
       <section className="project-service">
         <div className="project-container">
           <div className="project-service-row">
             <div>
               <span>Service</span>
+
               <strong>
-                {project.scope || project.category || "Architecture"}
+                {projectScope !== "—" ? projectScope : projectCategory}
               </strong>
             </div>
 
@@ -162,46 +202,14 @@ export default function ProjectDetails() {
         </div>
       </section>
 
-      {/* More work */}
-      {otherProjects.length > 0 && (
-        <section className="project-more-work">
-          <div className="project-container">
-            <div className="project-more-heading">
-              <div>
-                <span className="project-eyebrow">Portfolio</span>
-                <h2>More Work</h2>
-              </div>
-
-              <Link to="/projects">
-                View All Projects <span>→</span>
-              </Link>
-            </div>
-
-            <div className="project-cards">
-              {otherProjects.map((item) => (
-                <Link
-                  to={`/projects/${item.id}`}
-                  className="project-card"
-                  key={item.id}
-                >
-                  <div className="project-card-image">
-                    <img src={item.cover} alt={item.title} loading="lazy" />
-                  </div>
-                  <span>{item.category}</span>
-                  <h3>{item.title}</h3>
-                </Link>
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
-
       {/* CTA */}
       <section className="project-cta">
         <div className="project-container">
           <div className="project-cta-line">
             <span />
+
             <p>Let’s build something timeless.</p>
+
             <span />
           </div>
 

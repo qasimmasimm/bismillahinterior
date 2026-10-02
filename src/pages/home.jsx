@@ -16,7 +16,7 @@ import {
   FaTools,
   FaWhatsapp,
 } from "react-icons/fa";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { getStoredUser, clearAuth } from "../utils/cookie";
 import { UserContext } from "../context/usercontext";
 import { ProjectContext } from "../context/projectcontext";
@@ -156,6 +156,145 @@ function SectionHeading({ eyebrow, title, text, light = false }) {
       <span>{eyebrow}</span>
       <h2>{title}</h2>
       {text && <p>{text}</p>}
+    </div>
+  );
+}
+
+function ProductCard({ product }) {
+  const API_URL = import.meta.env.VITE_API_URL;
+  const [active, setActive] = useState(0);
+
+  const images = Array.isArray(product.images) ? product.images : [];
+
+  const productId = product._id || product.id;
+
+  const categoryTitle =
+    typeof product.category === "object"
+      ? product.category?.title || ""
+      : product.category || "";
+
+  const productTitle = product.title || product.name || "Untitled Product";
+
+  const next = (e) => {
+    e.preventDefault();
+
+    if (images.length > 0) {
+      setActive((prev) => (prev + 1) % images.length);
+    }
+  };
+
+  const previous = (e) => {
+    e.preventDefault();
+
+    if (images.length > 0) {
+      setActive((prev) => (prev - 1 + images.length) % images.length);
+    }
+  };
+
+  return (
+    <div className="col">
+      <div
+        className="card h-100 bg-white rounded-4 overflow-hidden shadow-sm"
+        style={{ border: "1px solid #e5ddd2" }}
+      >
+        <div
+          className="position-relative overflow-hidden"
+          style={{ aspectRatio: "1 / 1" }}
+        >
+          <Link to={`/products/${productId}`} className="text-decoration-none">
+            {images.length > 0 ? (
+              <img
+                src={`${API_URL}/${images[active]}`}
+                alt={productTitle}
+                className="w-100 h-100 object-fit-contain"
+              />
+            ) : (
+              <div
+                className="w-100 h-100 d-flex align-items-center justify-content-center"
+                style={{ backgroundColor: "#f5f0e8" }}
+              >
+                <span className="text-secondary small">No image available</span>
+              </div>
+            )}
+          </Link>
+
+          {images.length > 1 && (
+            <>
+              <button
+                type="button"
+                aria-label="Previous image"
+                onClick={previous}
+                className="btn btn-light position-absolute top-50 start-0 translate-middle-y ms-3 rounded-circle shadow-sm"
+                style={{ width: "38px", height: "38px" }}
+              >
+                ←
+              </button>
+
+              <button
+                type="button"
+                aria-label="Next image"
+                onClick={next}
+                className="btn btn-light position-absolute top-50 end-0 translate-middle-y me-3 rounded-circle shadow-sm"
+                style={{ width: "38px", height: "38px" }}
+              >
+                →
+              </button>
+
+              <div className="position-absolute bottom-0 start-50 translate-middle-x mb-3 d-flex gap-1">
+                {images.map((_, index) => (
+                  <span
+                    key={index}
+                    className="rounded-circle"
+                    style={{
+                      width: "7px",
+                      height: "7px",
+                      backgroundColor: index === active ? "#292621" : "#ffffff",
+                      opacity: index === active ? 1 : 0.7,
+                    }}
+                  />
+                ))}
+              </div>
+            </>
+          )}
+        </div>
+
+        <div className="card-body p-4 d-flex flex-column">
+          <small
+            className="text-uppercase fw-semibold"
+            style={{
+              color: "#ad8144",
+              letterSpacing: "1px",
+              fontSize: "11px",
+            }}
+          >
+            {categoryTitle}
+          </small>
+
+          <h3 className="h5 fw-semibold mt-2 mb-3" style={{ color: "#292621" }}>
+            <Link
+              to={`/products/${productId}`}
+              className="text-decoration-none"
+              style={{ color: "#292621" }}
+            >
+              {productTitle}
+            </Link>
+          </h3>
+
+          <div className="mt-auto pt-2">
+            <Link
+              to={`/products/${productId}`}
+              className="btn btn-sm rounded-pill px-3 py-2 fw-semibold w-100"
+              style={{
+                backgroundColor: "#f5f0e8",
+                color: "#292621",
+                border: "1px solid #e5ddd2",
+              }}
+            >
+              View Details <span className="ms-1">→</span>
+            </Link>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
@@ -448,7 +587,7 @@ export default function Home() {
           />
 
           <div className="row g-4">
-            {featuredProducts.map((product) => (
+            {/* {featuredProducts.map((product) => (
               <div className="col-sm-6 col-lg-3" key={product._id}>
                 <article className="product-card">
                   <div className="product-image-wrap">
@@ -503,6 +642,14 @@ export default function Home() {
                   </div>
                 </article>
               </div>
+            ))} */}
+            {featuredProducts.map((product) => (
+              <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+                <ProductCard
+                  key={product._id || product.id}
+                  product={product}
+                />
+              </div>
             ))}
           </div>
 
@@ -535,10 +682,10 @@ export default function Home() {
                       src={`${API_URL}/${project.cover}`}
                       alt={project.title}
                       className="w-100 object-fit-cover"
-                      style={{ height: "320px" }}
+                      style={{ height: "250px" }}
                     />
 
-                    <div className="pt-3">
+                    <div className="p-3">
                       <small
                         className="text-uppercase"
                         style={{ color: "var(--color-gold)" }}
@@ -561,7 +708,7 @@ export default function Home() {
           <div className="text-center mt-5"></div>
 
           <div className="section-button">
-            <Link to="/projects" className="text-link">
+            <Link to="/projects" className="- home-btn home-btn-dark">
               View All Projects
               <FaArrowRight />
             </Link>
