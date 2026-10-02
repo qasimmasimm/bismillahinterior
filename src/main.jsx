@@ -8,6 +8,7 @@ import UserProvider from "./context/usercontext.jsx";
 import ProjectProvider from "./context/projectcontext.jsx";
 import ProjectCategoryProvider from "./context/projectcategorycontext.jsx";
 import ProductsProvider from "./context/aticlescontext.jsx";
+import CategoriesProvider from "./context/categoriescontext.jsx"
 
 createRoot(document.getElementById("root")).render(
     <BrowserRouter>
@@ -15,7 +16,9 @@ createRoot(document.getElementById("root")).render(
         <ProjectCategoryProvider>
           <UserProvider>
             <ProductsProvider>
-              <App />
+              <CategoriesProvider>
+                              <App />
+              </CategoriesProvider>
             </ProductsProvider>
           </UserProvider>
         </ProjectCategoryProvider>

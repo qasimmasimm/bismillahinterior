@@ -1,460 +1,273 @@
 import { useContext, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { ProjectContext } from "../context/projectcontext";
 import SEO from "../components/seo";
+import { ProductsContext } from "../context/aticlescontext";
+import { FaWhatsapp } from "react-icons/fa";
 
-export default function ProjectDetails() {
+const API_URL = import.meta.env.VITE_API_URL;
+const WHATSAPP_NUMBER = "923354496040";
+
+const getImageUrl = (image) => {
+  if (!image) return "";
+
+  return `${API_URL.replace(/\/$/, "")}/${image
+    .replace(/^\//, "")
+    .replaceAll("\\", "/")}`;
+};
+
+export default function ProductDetails() {
   const { id } = useParams();
-  const { Project } = useContext(ProjectContext);
+  const { products = [] } = useContext(ProductsContext);
+  const [activeImage, setActiveImage] = useState(0);
 
-  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+  const product = products.find((item) => item._id === id);
 
-  const project = Project?.find((item) => item._id === id);
-
-  const API_URL = import.meta.env.VITE_API_URL;
-
-  const getImageUrl = (image) => {
-    if (!image) return "";
-
-    return `${API_URL}/${image.replaceAll("\\", "/")}`;
-  };
-
-  if (!project) {
+  if (!product) {
     return (
-      <main
-        className="py-5"
-        style={{
-          backgroundColor: "#fcfaf6",
-          minHeight: "60vh",
-        }}
-      >
-        <div className="container py-5 text-center">
-          <small
-            className="text-uppercase fw-semibold"
-            style={{
-              color: "#ad8144",
-              letterSpacing: "2px",
-            }}
-          >
-            Our Projects
-          </small>
+      <div className="container py-5 text-center">
+        <SEO
+          title="Product Not Found | Bismillah Interiors"
+          description="The requested product could not be found."
+        />
 
-          <h1
-            className="display-5 fw-semibold mt-3 mb-3"
-            style={{ color: "#292621" }}
-          >
-            Project Not Found
-          </h1>
+        <div className="py-5">
+          <p className="text-uppercase small mb-2">Our Products</p>
 
-          <p className="text-secondary mb-4">
-            The project you are looking for could not be found.
+          <h1 className="display-5 fw-semibold mb-3">Product Not Found</h1>
+
+          <p className="text-muted mb-4">
+            The product you are looking for could not be found.
           </p>
 
-          <Link
-            to="/projects"
-            className="btn rounded-pill px-4 py-3 fw-semibold"
-            style={{
-              backgroundColor: "#292621",
-              color: "#f5f0e8",
-            }}
-          >
-            Browse All Projects
-            <span className="ms-2">→</span>
+          <Link to="/products" className="btn btn-dark px-4">
+            Browse All Products
           </Link>
         </div>
-      </main>
+      </div>
     );
   }
 
-  const gallery = project.gallery || [];
-  const images = [project.cover, ...gallery].filter(Boolean);
-  const currentImage = images[selectedImageIndex] || project.cover;
+  const categoryName =
+    typeof product.category === "object"
+      ? product.category?.title || product.category?.name || "Uncategorized"
+      : product.category || "Uncategorized";
 
-  const categoryName = project.category?.name || "Project";
+  const productImages = Array.isArray(product.images) ? product.images : [];
+
+  const productName = product.name || "Untitled Product";
+
+  const productUrl =
+    typeof window !== "undefined"
+      ? `${window.location.origin}/products/${product._id}`
+      : `/products/${product._id}`;
+
+  const whatsappMessage = `Hello Bismillah Interiors,
+
+I am interested in this product:
+
+Product: ${productName}
+Category: ${categoryName}
+Price: PKR ${Number(product.price || 0).toLocaleString()}
+
+Product Details:
+${product.description}
+
+Product Link:
+${productUrl}
+
+I would like to know more about this product.`;
+
+  const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
+    whatsappMessage,
+  )}`;
 
   return (
-    <main style={{ backgroundColor: "#fcfaf6" }}>
+    <>
       <SEO
-        title={`${project.title} - ${categoryName}`}
-        description={
-          project.overview ||
-          `Explore ${project.title}, a ${categoryName.toLowerCase()} project by Bismillah Interiors.`
-        }
-        image={getImageUrl(project.cover)}
-        type="website"
-        schema={{
-          "@context": "https://schema.org",
-          "@type": "CreativeWork",
-          name: project.title,
-          headline: project.title,
-          description: project.overview,
-          image: images.map(getImageUrl),
-          locationCreated: project.location || undefined,
-          creator: {
-            "@type": "Organization",
-            name: "Bismillah Interiors",
-          },
-        }}
+        title={`${productName} | Bismillah Interiors`}
+        description={product.description}
       />
 
-      <section className="py-5">
-        <div className="container py-lg-4">
-          <nav aria-label="breadcrumb" className="mb-4">
-            <ol className="breadcrumb mb-0" style={{ fontSize: "13px" }}>
-              <li className="breadcrumb-item">
-                <Link
-                  to="/"
-                  className="text-secondary text-decoration-none"
-                >
-                  Home
-                </Link>
-              </li>
+      <div className="container py-4 py-lg-5">
+        <nav aria-label="breadcrumb" className="mb-4">
+          <ol className="breadcrumb small mb-0">
+            <li className="breadcrumb-item">
+              <Link to="/" className="text-decoration-none text-muted">
+                Home
+              </Link>
+            </li>
 
-              <li className="breadcrumb-item">
-                <Link
-                  to="/projects"
-                  className="text-secondary text-decoration-none"
-                >
-                  Projects
-                </Link>
-              </li>
+            <li className="breadcrumb-item">
+              <Link to="/products" className="text-decoration-none text-muted">
+                Products
+              </Link>
+            </li>
 
-              <li
-                className="breadcrumb-item active fw-semibold"
-                aria-current="page"
-                style={{ color: "#ad8144" }}
-              >
-                {project.title}
-              </li>
-            </ol>
-          </nav>
+            <li className="breadcrumb-item active" aria-current="page">
+              {productName}
+            </li>
+          </ol>
+        </nav>
 
-          <div className="row g-5 align-items-center">
-            <div className="col-12 col-lg-7">
-              <div
-                className="overflow-hidden rounded-4 shadow-sm border mb-3 bg-white"
-                style={{ borderColor: "#e5ddd2" }}
-              >
+        <div className="row g-4 g-lg-5 align-items-start">
+          <div className="col-lg-7">
+            <div className="product-details-image-wrap bg-light overflow-hidden">
+              {productImages.length > 0 ? (
                 <img
-                  src={getImageUrl(currentImage)}
-                  alt={project.title}
-                  className="w-100 object-fit-cover"
-                  style={{
-                    height: "540px",
-                    transition: "opacity 0.3s ease",
-                  }}
+                  src={getImageUrl(productImages[activeImage])}
+                  alt={productName}
+                  className="w-100 h-100 object-fit-contain"
+                  style={{ minHeight: "420px" }}
                 />
-              </div>
-
-              {images.length > 1 && (
-                <div className="d-flex gap-3 overflow-auto pb-2">
-                  {images.map((image, index) => (
-                    <button
-                      key={`${image}-${index}`}
-                      type="button"
-                      onClick={() => setSelectedImageIndex(index)}
-                      className="p-0 border-0 bg-transparent rounded-3 overflow-hidden shadow-sm"
-                      style={{
-                        width: "90px",
-                        height: "90px",
-                        flexShrink: 0,
-                        outline:
-                          selectedImageIndex === index
-                            ? "2px solid #ad8144"
-                            : "1px solid #e5ddd2",
-                        opacity:
-                          selectedImageIndex === index ? 1 : 0.7,
-                        cursor: "pointer",
-                      }}
-                    >
-                      <img
-                        src={getImageUrl(image)}
-                        alt={`${project.title} view ${index + 1}`}
-                        className="w-100 h-100 object-fit-cover"
-                      />
-                    </button>
-                  ))}
+              ) : (
+                <div
+                  className="d-flex align-items-center justify-content-center text-muted"
+                  style={{ minHeight: "520px" }}
+                >
+                  No image available
                 </div>
               )}
             </div>
 
-            <div className="col-12 col-lg-5">
-              <div className="ps-lg-3">
-                <div className="d-flex align-items-center gap-3 mb-2">
-                  <span
-                    className="text-uppercase fw-semibold"
-                    style={{
-                      color: "#ad8144",
-                      letterSpacing: "2px",
-                      fontSize: "12px",
-                    }}
-                  >
-                    {categoryName}
-                  </span>
-
-                  <span
-                    style={{
-                      width: "35px",
-                      height: "1px",
-                      backgroundColor: "#ad8144",
-                    }}
-                  />
-                </div>
-
-                <h1
-                  className="display-5 fw-semibold mb-3"
-                  style={{ color: "#292621" }}
-                >
-                  {project.title}
-                </h1>
-
-                {project.location && (
-                  <div className="d-flex align-items-center gap-2 mb-4">
-                    <span
-                      style={{
-                        color: "#ad8144",
-                        fontSize: "13px",
-                      }}
+            {productImages.length > 1 && (
+              <div className="row g-2 mt-2">
+                {productImages.map((image, index) => (
+                  <div className="col-3 col-sm-2" key={image + index}>
+                    <button
+                      type="button"
+                      onClick={() => setActiveImage(index)}
+                      className={`border-0 bg-light p-0 w-100 overflow-hidden ${
+                        activeImage === index ? "opacity-100" : "opacity-50"
+                      }`}
                     >
-                      Location
-                    </span>
-
-                    <span
-                      className="text-secondary"
-                      style={{ fontSize: "14px" }}
-                    >
-                      {project.location}
-                    </span>
+                      <img
+                        src={getImageUrl(image)}
+                        alt={`${productName} ${index + 1}`}
+                        className="w-100 object-fit-contain"
+                        style={{ height: "90px" }}
+                      />
+                    </button>
                   </div>
-                )}
+                ))}
+              </div>
+            )}
+          </div>
 
-                <p
-                  className="text-secondary lh-lg mb-4"
+          <div className="col-lg-5">
+            <div className="sticky-lg-top" style={{ top: "30px" }}>
+              <p className="text-uppercase small fw-semibold mb-2">
+                {categoryName}
+              </p>
+
+              <h1 className="display-5 fw-semibold mb-3">{productName}</h1>
+
+              <div className="mb-4">
+                <span className="fs-4 fw-semibold">
+                  PKR {Number(product.price || 0).toLocaleString()}
+                </span>
+              </div>
+
+              <div className="border-top border-bottom py-4 mb-4">
+                <h5 className="fw-semibold mb-3">Product Details</h5>
+
+                <p className="text-muted mb-0">{product.description}</p>
+              </div>
+
+              <div className="d-grid gap-2">
+                <a
+                  href={whatsappUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn btn-lg d-flex rounded-pill align-items-center justify-content-center gap-2"
                   style={{
-                    maxWidth: "500px",
-                    fontSize: "15px",
+                    backgroundColor: "#25D366",
+                    color: "#fff",
+                    height: "38px",
+                    border: "1px solid #25D366",
+                    fontsize: "16px",
                   }}
                 >
-                  {project.overview}
-                </p>
+                  <FaWhatsapp size={20} />
+                  Enquire on WhatsApp
+                </a>
 
-                <div
-                  className="border-top border-bottom py-3 mb-4"
-                  style={{ borderColor: "#e5ddd2" }}
+                <Link
+                  to="/products"
+                  className="btn btn-outline-dark rounded-pill btn-lg d-flex align-items-center justify-content-center"
+                  style={{ height: "38px", fontsize: "16px" }}
                 >
-                  <div
-                    className="d-flex justify-content-between py-2 border-bottom"
-                    style={{ borderColor: "#f0eae0" }}
-                  >
-                    <span
-                      className="text-secondary"
-                      style={{ fontSize: "14px" }}
-                    >
-                      Category
-                    </span>
+                  Continue Browsing
+                </Link>
+              </div>
 
-                    <strong
-                      style={{
-                        color: "#292621",
-                        fontSize: "14px",
-                      }}
-                    >
-                      {categoryName}
-                    </strong>
-                  </div>
-
-                  <div
-                    className="d-flex justify-content-between py-2 border-bottom"
-                    style={{ borderColor: "#f0eae0" }}
-                  >
-                    <span
-                      className="text-secondary"
-                      style={{ fontSize: "14px" }}
-                    >
-                      Location
-                    </span>
-
-                    <strong
-                      style={{
-                        color: "#292621",
-                        fontSize: "14px",
-                      }}
-                    >
-                      {project.location || "Lahore"}
-                    </strong>
-                  </div>
-
-                  <div className="d-flex justify-content-between py-2">
-                    <span
-                      className="text-secondary"
-                      style={{ fontSize: "14px" }}
-                    >
-                      Project Images
-                    </span>
-
-                    <strong
-                      style={{
-                        color: "#292621",
-                        fontSize: "14px",
-                      }}
-                    >
-                      {images.length}
-                    </strong>
-                  </div>
+              <div className="mt-4 pt-3 border-top">
+                <div className="d-flex justify-content-between small">
+                  <span className="text-muted">Category</span>
+                  <span className="fw-medium">{categoryName}</span>
                 </div>
 
-                <div className="mb-4">
-                  <h6
-                    className="text-uppercase fw-semibold mb-2"
-                    style={{
-                      color: "#ad8144",
-                      letterSpacing: "1.5px",
-                      fontSize: "12px",
-                    }}
-                  >
-                    Scope of Work
-                  </h6>
-
-                  <p
-                    className="text-secondary mb-0 lh-lg"
-                    style={{ fontSize: "14px" }}
-                  >
-                    {project.scope}
-                  </p>
-                </div>
-
-                <div className="d-flex flex-column gap-2">
-                  <Link
-                    to="/contact"
-                    className="btn rounded-pill px-4 py-3 fw-semibold text-center"
-                    style={{
-                      backgroundColor: "#292621",
-                      color: "#f5f0e8",
-                    }}
-                  >
-                    Discuss Your Project
-                    <span className="ms-2">→</span>
-                  </Link>
-
-                  <Link
-                    to="/projects"
-                    className="btn btn-outline-dark rounded-pill px-4 py-3 fw-semibold text-center"
-                  >
-                    View All Projects
-                  </Link>
+                <div className="d-flex justify-content-between small mt-2">
+                  <span className="text-muted">Images</span>
+                  <span className="fw-medium">{productImages.length}</span>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </section>
 
-      {images.length > 1 && (
-        <section
-          className="py-5"
-          style={{ backgroundColor: "#f5f0e8" }}
-        >
-          <div className="container py-lg-3">
-            <div className="mb-4">
-              <small
-                className="text-uppercase fw-semibold"
-                style={{
-                  color: "#ad8144",
-                  letterSpacing: "2px",
-                }}
-              >
-                Project Gallery
-              </small>
+        {productImages.length > 0 && (
+          <section className="mt-5 pt-4">
+            <div className="d-flex justify-content-between align-items-end mb-4">
+              <div>
+                <p className="text-uppercase small fw-semibold mb-2">
+                  Product Gallery
+                </p>
 
-              <h2
-                className="display-6 fw-semibold mt-2"
-                style={{ color: "#292621" }}
-              >
-                {project.title}
-              </h2>
+                <h2 className="fw-semibold mb-0">Explore {productName}</h2>
+              </div>
             </div>
 
-            <div className="row g-4">
-              {images.map((image, index) => (
-                <div
-                  className={
-                    index === 0
-                      ? "col-12"
-                      : "col-12 col-md-6"
-                  }
-                  key={`${image}-${index}`}
-                >
-                  <div className="overflow-hidden rounded-4 shadow-sm bg-white">
+            <div className="row g-3">
+              {productImages.map((image, index) => (
+                <div className="col-12 col-md-6 col-lg-4" key={image + index}>
+                  <div className="bg-light overflow-hidden">
                     <img
                       src={getImageUrl(image)}
-                      alt={`${project.title} detail view ${index + 1}`}
-                      className="w-100 object-fit-cover"
-                      loading={index > 1 ? "lazy" : "eager"}
-                      style={{
-                        height: index === 0 ? "500px" : "360px",
-                      }}
+                      alt={`${productName} ${index + 1}`}
+                      className="w-100 object-fit-contain"
+                      style={{ height: "260px" }}
                     />
                   </div>
                 </div>
               ))}
             </div>
+          </section>
+        )}
+
+        <section className="mt-5 pt-5">
+          <div className="bg-dark text-white p-4 p-md-5 text-center">
+            <p className="text-uppercase small mb-2">
+              Interested in this product?
+            </p>
+
+            <h2 className="fw-semibold mb-3">Talk to Bismillah Interiors</h2>
+
+            <p className="text-white-50 mb-4 mx-auto">
+              Contact us on WhatsApp for availability, pricing, specifications,
+              and further details about this product.
+            </p>
+
+            <a
+              href={whatsappUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn btn-light px-4"
+            >
+              Ask About This Product
+            </a>
           </div>
         </section>
-      )}
-
-      <section
-        className="py-5"
-        style={{ backgroundColor: "#292621" }}
-      >
-        <div className="container py-4 text-center">
-          <small
-            className="text-uppercase fw-semibold"
-            style={{
-              color: "#ad8144",
-              letterSpacing: "2px",
-            }}
-          >
-            Have a Similar Project?
-          </small>
-
-          <h2
-            className="display-6 fw-semibold mt-2 mb-3"
-            style={{ color: "#f5f0e8" }}
-          >
-            Let's create something beautiful for your space.
-          </h2>
-
-          <p
-            className="text-white-50 mb-4 mx-auto"
-            style={{ maxWidth: "600px" }}
-          >
-            Discuss your interior requirements with Bismillah
-            Interiors and explore the possibilities for your next
-            project.
-          </p>
-
-          <div className="d-flex justify-content-center gap-3 flex-wrap">
-            <Link
-              to="/contact"
-              className="btn rounded-pill px-4 py-3 fw-semibold"
-              style={{
-                backgroundColor: "#b08a45",
-                color: "#292621",
-              }}
-            >
-              Contact Us
-              <span className="ms-2">→</span>
-            </Link>
-
-            <Link
-              to="/projects"
-              className="btn btn-outline-light rounded-pill px-4 py-3 fw-semibold"
-            >
-              Back to Projects
-            </Link>
-          </div>
-        </div>
-      </section>
-    </main>
+      </div>
+    </>
   );
 }
