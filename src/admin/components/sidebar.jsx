@@ -110,10 +110,10 @@ const logout = () => {
               <Accordion.Body>
                 <button
                   type="button"
-                  onClick={() => handleNavigate("/admin/categories/add")}
+                  onClick={() => handleNavigate("/admin/categories")}
                   className="admin-sidebar-subitem"
                 >
-                  <span>Add Category</span>
+                  <span>Manage Categories</span>
                 </button>
               </Accordion.Body>
             </Accordion.Item>

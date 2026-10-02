@@ -3,6 +3,7 @@ import { Route, Routes,useNavigate,Navigate } from "react-router-dom";
 import Layout from "./layout/minlayout";
 import {getStoredUser} from "./utils/cookie";
 import { UserContext } from "./context/usercontext";
+import { ToastContainer } from "react-toastify";
 
 const Home = lazy(() => import("./pages/home"));
 const About = lazy(() => import("./pages/aboutus"));
@@ -22,9 +23,9 @@ const Adminlayout = lazy(() => import("./admin/layout/adminlayout"));
 const Dashboard = lazy(() => import("./admin/pages/dashboard"));
 const Articles = lazy(() => import("./admin/pages/articles"));
 const AddArticles = lazy(() => import("./admin/pages/addarticles"));
-const AddCategories = lazy(() => import("./admin/pages/addcategories"));
 const AddProjects = lazy(() => import("./admin/pages/projects"));
 const ManageProjects = lazy(() => import("./admin/pages/manageprojects"));
+const CategoriesAdmin = lazy(() => import("./admin/pages/categries"));
 
 function App() {
     const { user: contextUser } = useContext(UserContext);
@@ -82,11 +83,12 @@ function App() {
         <Route index element={<Dashboard />} />
         <Route path="articles" element={<Articles />} />
         <Route path="articles/add" element={<AddArticles />} />
-        <Route path="categories/add" element={<AddCategories />} />
+        <Route path="categories" element={<CategoriesAdmin />} />
         <Route path="projects/add" element={<AddProjects />} />
         <Route path="manageprojects" element={<ManageProjects />} />
         </Route>
       </Routes>
+          <ToastContainer/>
     </Suspense>
   );
 }
