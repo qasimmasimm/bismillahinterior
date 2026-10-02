@@ -1,5 +1,5 @@
 import { lazy, Suspense,useContext } from "react";
-import { Route, Routes,useNavigate } from "react-router-dom";
+import { Route, Routes,useNavigate,Navigate } from "react-router-dom";
 import Layout from "./layout/minlayout";
 import {getStoredUser} from "./utils/cookie";
 import { UserContext } from "./context/usercontext";
@@ -30,7 +30,7 @@ function App() {
     const { user: contextUser } = useContext(UserContext);
   const user = contextUser || getStoredUser();
 
-  const Navigate = useNavigate();
+  const navigate = useNavigate();
 
   return (
     <Suspense
@@ -69,16 +69,16 @@ function App() {
         <Route path="/register" element={<Register />} />
 
 
-        <Route
-          path="/admin"
-          element={
-            user?.role === "admin" ? (
-              <Adminlayout />
-            ) : (
-              <Navigate to="/login" replace />
-            )
-          }
-        >
+     <Route
+  path="/admin/*"
+  element={
+    user?.role === "admin" ? (
+      <Adminlayout />
+    ) : (
+      <Navigate to="/" replace />
+    )
+  }
+>
         <Route index element={<Dashboard />} />
         <Route path="articles" element={<Articles />} />
         <Route path="articles/add" element={<AddArticles />} />
