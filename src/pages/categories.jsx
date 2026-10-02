@@ -1,13 +1,12 @@
 import { Link } from "react-router-dom";
 // import categories from "../data/categoriesdata";
 import SEO from "../components/seo";
-import {useContext} from "react";
-import { CategoriesContext } from "../context/categoriescontext"; 
+import { useContext } from "react";
+import { CategoriesContext } from "../context/categoriescontext";
 
 export default function Categories() {
-  const API_URL=import.meta.env.VITE_API_URL;
+  const API_URL = import.meta.env.VITE_API_URL;
   const { categories } = useContext(CategoriesContext);
-  console.log("Categories data:", categories)
   return (
     <>
       <SEO
@@ -57,7 +56,10 @@ export default function Categories() {
             >
               Catalog Overview
             </small>
-            <h2 className="display-5 fw-semibold mt-2" style={{ color: "#292621" }}>
+            <h2
+              className="display-5 fw-semibold mt-2"
+              style={{ color: "#292621" }}
+            >
               Explore All 12 Collections
             </h2>
           </div>
@@ -72,7 +74,7 @@ export default function Categories() {
                   <div className="position-relative">
                     <Link to={`/categories/${category._id}`}>
                       <img
-                        src={`${ API_URL}/${category.image}`}
+                        src={`${API_URL}/${category.image}`}
                         alt={category.title}
                         className="card-img-top w-100 object-fit-cover"
                         style={{ height: "235px" }}

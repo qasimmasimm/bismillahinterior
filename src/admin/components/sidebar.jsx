@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, Link } from "react-router-dom";
 import { Accordion } from "react-bootstrap";
 import {
   FaChartPie,
@@ -27,12 +27,12 @@ export default function Sidebar({ onNavigate }) {
     onNavigate?.();
   };
 
-const logout = () => {
-  clearAuth();
-  setUser(null);
-  toast.info("Admin Logout Successfully!");
-  navigate("/");
-};
+  const logout = () => {
+    clearAuth();
+    setUser(null);
+    toast.info("Admin Logout Successfully!");
+    navigate("/");
+  };
   const isActive = (path) => {
     if (path === "/admin") {
       return location.pathname === "/admin";
@@ -143,6 +143,14 @@ const logout = () => {
               </Accordion.Body>
             </Accordion.Item>
           </Accordion>
+          <button
+            type="button"
+            onClick={() => handleNavigate("/")}
+            className={`admin-sidebar-link`}
+          >
+            <FaGlobe />
+            <span> Home</span>{" "}
+          </button>
         </div>
       </div>
 
