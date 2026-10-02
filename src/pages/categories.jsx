@@ -1,8 +1,13 @@
 import { Link } from "react-router-dom";
-import categories from "../data/categoriesdata";
+// import categories from "../data/categoriesdata";
 import SEO from "../components/seo";
+import {useContext} from "react";
+import { CategoriesContext } from "../context/categoriescontext"; 
 
 export default function Categories() {
+  const API_URL=import.meta.env.VITE_API_URL;
+  const { categories } = useContext(CategoriesContext);
+  console.log("Categories data:", categories)
   return (
     <>
       <SEO
@@ -59,15 +64,15 @@ export default function Categories() {
 
           <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
             {categories.map((category, index) => (
-              <div className="col" key={category.slug}>
+              <div className="col" key={category._id}>
                 <div
                   className="card h-100 bg-white rounded-4 overflow-hidden shadow-sm"
                   style={{ border: "1px solid #e5ddd2" }}
                 >
                   <div className="position-relative">
-                    <Link to={`/categories/${category.slug}`}>
+                    <Link to={`/categories/${category._id}`}>
                       <img
-                        src={category.image}
+                        src={`${ API_URL}/${category.image}`}
                         alt={category.title}
                         className="card-img-top w-100 object-fit-cover"
                         style={{ height: "235px" }}
@@ -108,7 +113,7 @@ export default function Categories() {
                       style={{ color: "#292621" }}
                     >
                       <Link
-                        to={`/categories/${category.slug}`}
+                        to={`/categories/${category._id}`}
                         className="text-decoration-none"
                         style={{ color: "#292621" }}
                       >
@@ -121,7 +126,7 @@ export default function Categories() {
                     </p>
 
                     <Link
-                      to={`/categories/${category.slug}`}
+                      to={`/categories/${category._id}`}
                       className="text-decoration-none mt-auto fw-semibold"
                       style={{ color: "#292621" }}
                     >

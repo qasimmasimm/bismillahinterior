@@ -5,9 +5,8 @@ import { FaSearch } from "react-icons/fa";
 import { ProductsContext } from "../context/aticlescontext";
 import { CategoriesContext } from "../context/categoriescontext";
 
-
 function ProductCard({ product }) {
-const API_URL=import.meta.env.VITE_API_URL
+  const API_URL = import.meta.env.VITE_API_URL;
   const [active, setActive] = useState(0);
 
   const images = Array.isArray(product.images) ? product.images : [];
@@ -47,10 +46,7 @@ const API_URL=import.meta.env.VITE_API_URL
           className="position-relative overflow-hidden"
           style={{ aspectRatio: "1 / 1" }}
         >
-          <Link
-            to={`/products/${productId}`}
-            className="text-decoration-none"
-          >
+          <Link to={`/products/${productId}`} className="text-decoration-none">
             {images.length > 0 ? (
               <img
                 src={`${API_URL}/${images[active]}`}
@@ -62,9 +58,7 @@ const API_URL=import.meta.env.VITE_API_URL
                 className="w-100 h-100 d-flex align-items-center justify-content-center"
                 style={{ backgroundColor: "#f5f0e8" }}
               >
-                <span className="text-secondary small">
-                  No image available
-                </span>
+                <span className="text-secondary small">No image available</span>
               </div>
             )}
           </Link>
@@ -99,8 +93,7 @@ const API_URL=import.meta.env.VITE_API_URL
                     style={{
                       width: "7px",
                       height: "7px",
-                      backgroundColor:
-                        index === active ? "#292621" : "#ffffff",
+                      backgroundColor: index === active ? "#292621" : "#ffffff",
                       opacity: index === active ? 1 : 0.7,
                     }}
                   />
@@ -122,10 +115,7 @@ const API_URL=import.meta.env.VITE_API_URL
             {categoryTitle}
           </small>
 
-          <h3
-            className="h5 fw-semibold mt-2 mb-3"
-            style={{ color: "#292621" }}
-          >
+          <h3 className="h5 fw-semibold mt-2 mb-3" style={{ color: "#292621" }}>
             <Link
               to={`/products/${productId}`}
               className="text-decoration-none"
@@ -204,8 +194,7 @@ export default function Products() {
         categoryTitle.trim().toLowerCase() ===
           selectedCategory.trim().toLowerCase();
 
-      const productTitle =
-        product.title || product.name || "";
+      const productTitle = product.title || product.name || "";
 
       const matchesSearch =
         query === "" ||
@@ -268,9 +257,8 @@ export default function Products() {
             className="text-secondary mb-0 mx-auto"
             style={{ maxWidth: "600px" }}
           >
-            Discover our curated range of wall panels, ceilings, wallpapers,
-            and flooring finishes for premium residential and commercial
-            spaces.
+            Discover our curated range of wall panels, ceilings, wallpapers, and
+            flooring finishes for premium residential and commercial spaces.
           </p>
         </div>
 
@@ -315,10 +303,8 @@ export default function Products() {
 
             <div className="col-12 col-md-6 text-md-end">
               <small className="text-secondary fw-semibold">
-                Showing {filteredProducts.length} of {products.length}{" "}
-                products
-                {selectedCategory !== "All" &&
-                  ` in ${selectedCategory}`}
+                Showing {filteredProducts.length} of {products.length} products
+                {selectedCategory !== "All" && ` in ${selectedCategory}`}
               </small>
             </div>
           </div>
@@ -330,13 +316,8 @@ export default function Products() {
               className="btn btn-sm rounded-pill px-3 py-2 fw-semibold"
               style={{
                 backgroundColor:
-                  selectedCategory === "All"
-                    ? "#292621"
-                    : "#f5f0e8",
-                color:
-                  selectedCategory === "All"
-                    ? "#ffffff"
-                    : "#292621",
+                  selectedCategory === "All" ? "#292621" : "#f5f0e8",
+                color: selectedCategory === "All" ? "#ffffff" : "#292621",
                 border: "1px solid #ddd5ca",
                 fontSize: "13px",
               }}
@@ -346,11 +327,9 @@ export default function Products() {
 
             {categories.map((category) => {
               const categoryTitle = category.title || "";
-              const categoryKey =
-                category._id || category.id || category.slug;
+              const categoryKey = category._id || category.id || category.slug;
 
-              const count =
-                getCategoryProductCount(categoryTitle);
+              const count = getCategoryProductCount(categoryTitle);
 
               const isActive =
                 selectedCategory.toLowerCase().trim() ===
@@ -360,17 +339,11 @@ export default function Products() {
                 <button
                   key={categoryKey}
                   type="button"
-                  onClick={() =>
-                    handleCategoryChange(categoryTitle)
-                  }
+                  onClick={() => handleCategoryChange(categoryTitle)}
                   className="btn btn-sm rounded-pill px-3 py-2 fw-semibold"
                   style={{
-                    backgroundColor: isActive
-                      ? "#ad8144"
-                      : "#ffffff",
-                    color: isActive
-                      ? "#ffffff"
-                      : "#292621",
+                    backgroundColor: isActive ? "#ad8144" : "#ffffff",
+                    color: isActive ? "#ffffff" : "#292621",
                     border: isActive
                       ? "1px solid #ad8144"
                       : "1px solid #ddd5ca",
@@ -388,10 +361,7 @@ export default function Products() {
         {filteredProducts.length > 0 ? (
           <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
             {filteredProducts.map((product) => (
-              <ProductCard
-                key={product._id || product.id}
-                product={product}
-              />
+              <ProductCard key={product._id || product.id} product={product} />
             ))}
           </div>
         ) : (
@@ -399,16 +369,13 @@ export default function Products() {
             className="text-center py-5 bg-white rounded-4 border p-5"
             style={{ borderColor: "#e5ddd2" }}
           >
-            <h3
-              className="h4 fw-semibold mb-2"
-              style={{ color: "#292621" }}
-            >
+            <h3 className="h4 fw-semibold mb-2" style={{ color: "#292621" }}>
               No products found
             </h3>
 
             <p className="text-secondary mb-4">
-              We couldn't find any products matching your current
-              filters or search query.
+              We couldn't find any products matching your current filters or
+              search query.
             </p>
 
             <button
