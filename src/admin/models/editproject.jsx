@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
@@ -7,9 +7,12 @@ import FloatingLabel from "react-bootstrap/FloatingLabel";
 import { toast } from "react-toastify";
 import { getToken } from "../../utils/cookie";
 import { FaPen } from "react-icons/fa";
+import {ProjectContext} from "../../context/projectcontext";
 
 export default function Editproject({ project }) {
   const API_URL = import.meta.env.VITE_API_URL;
+
+  const {setProject}=useContext(ProjectContext)
 
   const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -96,17 +99,19 @@ export default function Editproject({ project }) {
             Authorization: token,
           },
           body: formData,
-        }
+        },
       );
 
       const result = await response.json();
 
       if (!response.ok) {
-        throw new Error(
-          result?.message || "Failed to update project"
-        );
+        throw new Error(result?.message || "Failed to update project");
       }
+      const updatedProject = result.content || result;
 
+      setProject((prev) =>
+        prev.map((item) => (item._id === project._id ? updatedProject : item)),
+      );
       setShow(false);
       reset();
     } catch (error) {
@@ -119,27 +124,21 @@ export default function Editproject({ project }) {
 
   return (
     <>
-     <Button
-  type="button"
-  onClick={handleShow}
-  className="border-0 rounded-circle p-2 d-flex align-items-center justify-content-center"
-  style={{
-    background: "var(--color-gold-dark)",
-    width: "34px",
-    height: "34px",
-  }}
-  title="Edit Project"
->
-  <FaPen size={13} />
-</Button>
-
-      <Modal
-        show={show}
-        onHide={handleClose}
-        centered
-        size="lg"
-        
+      <Button
+        type="button"
+        onClick={handleShow}
+        className="border-0 rounded-circle p-2 d-flex align-items-center justify-content-center"
+        style={{
+          background: "var(--color-gold-dark)",
+          width: "34px",
+          height: "34px",
+        }}
+        title="Edit Project"
       >
+        <FaPen size={13} />
+      </Button>
+
+      <Modal show={show} onHide={handleClose} centered size="lg">
         <Modal.Header
           closeButton
           className="border-0 px-3 px-sm-4 pt-3 pt-sm-4 pb-2"

@@ -79,7 +79,7 @@ export default function Sidebar({ onNavigate }) {
             <Accordion.Item eventKey="articles">
               <Accordion.Header>
                 <FaFileLines />
-                <span>Articles</span>
+                <span>Products</span>
               </Accordion.Header>
 
               <Accordion.Body>
@@ -88,7 +88,7 @@ export default function Sidebar({ onNavigate }) {
                   onClick={() => handleNavigate("/admin/articles/add")}
                   className="admin-sidebar-subitem"
                 >
-                  <span>Add Article</span>
+                  <span>Add Products</span>
                 </button>
 
                 <button
@@ -96,7 +96,7 @@ export default function Sidebar({ onNavigate }) {
                   onClick={() => handleNavigate("/admin/articles")}
                   className="admin-sidebar-subitem"
                 >
-                  <span>Manage Articles</span>
+                  <span>Manage Products</span>
                 </button>
               </Accordion.Body>
             </Accordion.Item>
