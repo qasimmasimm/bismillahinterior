@@ -21,114 +21,25 @@ import { getStoredUser, clearAuth } from "../utils/cookie";
 import { UserContext } from "../context/usercontext";
 import { ProjectContext } from "../context/projectcontext";
 import { ProductsContext } from "../context/aticlescontext";
-
+import { CategoriesContext } from "../context/categoriescontext";
 const banners = [
   {
-    image:
-      "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=1200&q=75&fm=webp",
-    eyebrow: "Premium Interior Solutions",
-    title: "Transform Your Space With Timeless Elegance",
-    text: "Premium wall panels, ceilings, wallpapers and interior finishes for homes, offices and commercial spaces.",
+    image: "/images/banner1.avif",
+    eyebrow: "Premium Wall Panels",
+    title: "Transform Your Walls With Modern Elegance",
+    text: "Explore premium wall panels designed to add texture, character and a refined finish to homes, offices and commercial spaces.",
   },
   {
-    image:
-      "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=1200&q=75&fm=webp",
-    eyebrow: "Designed For Your Space",
-    title: "Beautiful Interiors. Thoughtful Details.",
-    text: "Create an interior that reflects your style with carefully selected textures, finishes and materials.",
+    image: "/images/banner3.avif",
+    eyebrow: "Modern Wall Solutions",
+    title: "Walls That Make A Statement",
+    text: "Discover stylish wall panels in a range of textures, patterns and finishes to create interiors that stand out.",
   },
   {
-    image:
-      "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=1200&q=75&fm=webp",
-    eyebrow: "Lahore Interior Specialists",
-    title: "Give Your Walls A New Character",
-    text: "Discover modern decorative wall solutions designed to elevate the look and feel of your space.",
-  },
-];
-
-const services = [
-  {
-    image:
-      "https://images.unsplash.com/photo-1615529162924-f8605388461d?auto=format&fit=crop&w=600&q=75&fm=webp",
-    title: "Wall Panels",
-    text: "Modern decorative wall panels in a variety of textures, patterns and finishes.",
-    slug: "wpc-imported-panels",
-  },
-  {
-    image:
-      "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=600&q=75&fm=webp",
-    title: "Ceiling Solutions",
-    text: "Elegant ceiling treatments that add depth, character and visual balance to your interiors.",
-    slug: "ceiling-2x2",
-  },
-  {
-    image:
-      "https://images.unsplash.com/photo-1600607688969-a5bfcd646154?auto=format&fit=crop&w=600&q=75&fm=webp",
-    title: "Wallpapers",
-    text: "Transform plain walls with carefully selected patterns, textures and contemporary designs.",
-    slug: "wallpapers",
-  },
-  {
-    image:
-      "https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?auto=format&fit=crop&w=600&q=75&fm=webp",
-    title: "Flooring",
-    text: "Stylish flooring solutions including modern wood-look and durable contemporary finishes.",
-    slug: "spc-flooring",
-  },
-];
-
-// const products = [
-//   {
-//     image:
-//       "https://images.unsplash.com/photo-1618220179428-22790b461013?auto=format&fit=crop&w=600&q=75&fm=webp",
-//     title: "Wood Texture Wall Panel",
-//     category: "Wall Panels",
-//     id: "wpc-imported-01",
-//   },
-//   {
-//     image:
-//       "https://images.unsplash.com/photo-1615529162924-f8605388461d?auto=format&fit=crop&w=600&q=75&fm=webp",
-//     title: "Modern Decorative Panel",
-//     category: "Wall Panels",
-//     id: "wpc-solid-01",
-//   },
-//   {
-//     image:
-//       "https://images.unsplash.com/photo-1600607688969-a5bfcd646154?auto=format&fit=crop&w=600&q=75&fm=webp",
-//     title: "Textured Interior Finish",
-//     category: "Wallpapers",
-//     id: "wallpaper-01",
-//   },
-//   {
-//     image:
-//       "https://images.unsplash.com/photo-1600210491892-03d54c0aaf87?auto=format&fit=crop&w=600&q=75&fm=webp",
-//     title: "Oak Wood SPC Flooring",
-//     category: "SPC Flooring",
-//     id: "spc-01",
-//   },
-// ];
-
-const projects = [
-  {
-    id: "modern-living-room",
-    image:
-      "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=700&q=75&fm=webp",
-    title: "Modern Living Room",
-    category: "Residential Interior",
-  },
-  {
-    id: "elegant-bedroom",
-    image:
-      "https://images.unsplash.com/photo-1600566753051-f0b89df2dd90?auto=format&fit=crop&w=700&q=75&fm=webp",
-    title: "Elegant Feature Wall",
-    category: "Wall Panel Installation",
-  },
-  {
-    id: "contemporary-tv-unit",
-    image:
-      "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=700&q=75&fm=webp",
-    title: "Contemporary Interior",
-    category: "Residential Project",
+    image: "/images/banner03.avif",
+    eyebrow: "Designed For Modern Interiors",
+    title: "Elevate Your Space With Premium Panels",
+    text: "From contemporary designs to timeless textures, find the perfect wall panel to complement your interior style.",
   },
 ];
 
@@ -305,12 +216,12 @@ export default function Home() {
   const navigate = useNavigate();
   const { Project } = useContext(ProjectContext);
   const { products } = useContext(ProductsContext);
+  const { categories } = useContext(CategoriesContext);
 
   const featuredProjects = Project?.slice(0, 4) || [];
   const featuredProducts = products?.slice(0, 4) || [];
+  const featuredCategories = categories?.slice(0, 4) || [];
   const API_URL = import.meta.env.VITE_API_URL;
-
-  // console.log("Current Project from Context:", Project);
 
   return (
     <div className="home-page">
@@ -338,8 +249,6 @@ export default function Home() {
                   fetchPriority={index === 0 ? "high" : "auto"}
                   loading={index === 0 ? "eager" : "lazy"}
                   decoding="async"
-                  width="1200"
-                  height="700"
                 />
 
                 <div className="hero-overlay"></div>
@@ -375,7 +284,7 @@ export default function Home() {
             <div className="col-lg-6">
               <div className="about-image-wrap">
                 <img
-                  src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=800&q=75&fm=webp"
+                  src="/images/home-about.avif"
                   alt="Elegant interior designed by Bismillah Interiors"
                   className="about-image"
                   loading="lazy"
@@ -448,13 +357,13 @@ export default function Home() {
           />
 
           <div className="row g-4">
-            {services.map((service, index) => (
-              <div className="col-sm-6 col-lg-3" key={service.title}>
+            {featuredCategories.map((category, index) => (
+              <div className="col-sm-6 col-lg-3" key={category._id}>
                 <article className="service-card">
                   <div className="service-image-wrap">
                     <img
-                      src={service.image}
-                      alt={service.title}
+                      src={`${API_URL}/${category.image}`}
+                      alt={category.title}
                       className="service-image"
                       loading="lazy"
                       decoding="async"
@@ -466,11 +375,19 @@ export default function Home() {
                   </div>
 
                   <div className="service-body">
-                    <h3>{service.title}</h3>
-                    <p>{service.text}</p>
+                    <h3>{category.title}</h3>
+                    <p
+                      style={{
+                        textOverflow: "ellipsis",
+                        whiteSpace: "nowrap",
+                        overflow: "hidden",
+                      }}
+                    >
+                      {category.description}
+                    </p>
 
                     <Link
-                      to={`/categories/${service.slug}`}
+                      to={`/categories/${category._id}`}
                       className="service-link"
                     >
                       Explore
@@ -556,7 +473,7 @@ export default function Home() {
             <div className="col-lg-6">
               <div className="why-image-wrap">
                 <img
-                  src="https://images.unsplash.com/photo-1615529162924-f8605388461d?auto=format&fit=crop&w=800&q=75&fm=webp"
+                  src="/images/why-us.avif"
                   alt="Premium wall panel interior"
                   className="why-image"
                   loading="lazy"
@@ -587,68 +504,9 @@ export default function Home() {
           />
 
           <div className="row g-4">
-            {/* {featuredProducts.map((product) => (
-              <div className="col-sm-6 col-lg-3" key={product._id}>
-                <article className="product-card">
-                  <div className="product-image-wrap">
-                    {product.images?.length > 0 ? (
-                      <Carousel
-                        indicators={false}
-                        controls={product.images.length > 1}
-                        interval={null}
-                      >
-                        {product.images.map((image, index) => (
-                          <Carousel.Item key={`${product._id}-${index}`}>
-                            <img
-                              src={`${API_URL}/${image.replaceAll("\\", "/")}`}
-                              alt={`${product.name} ${index + 1}`}
-                              className="product-image"
-                              loading={index === 0 ? "eager" : "lazy"}
-                              decoding="async"
-                              style={{
-                                width: "100%",
-                                height: "330px",
-                                objectFit: "contain",
-                              }}
-                            />
-                          </Carousel.Item>
-                        ))}
-                      </Carousel>
-                    ) : (
-                      <img
-                        src="https://via.placeholder.com/400x330?text=No+Image"
-                        alt="No product image available"
-                        className="product-image"
-                        width="400"
-                        height="330"
-                      />
-                    )}
-
-                    <span className="product-category">
-                      {product.category?.title}
-                    </span>
-                  </div>
-
-                  <div className="product-body">
-                    <h3>{product.name}</h3>
-
-                    <Link
-                      to={`/products/${product._id}`}
-                      className="product-link"
-                    >
-                      View Product
-                      <FaArrowRight />
-                    </Link>
-                  </div>
-                </article>
-              </div>
-            ))} */}
             {featuredProducts.map((product) => (
-              <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-                <ProductCard
-                  key={product._id || product.id}
-                  product={product}
-                />
+              <div className="col-sm-6 col-lg-3" key={product._id}>
+                <ProductCard product={product} />
               </div>
             ))}
           </div>

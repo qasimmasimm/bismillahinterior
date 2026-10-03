@@ -12,13 +12,6 @@ export default function ProjectDetails() {
 
   const project = Project?.find((item) => String(item._id) === String(id));
 
-  const getImageUrl = (image) => {
-    if (!image) return "";
-
-    return `${API_URL.replace(/\/$/, "")}/${image
-      .replace(/^\//, "")
-      .replaceAll("\\", "/")}`;
-  };
 
   if (!project) {
     return (
@@ -61,14 +54,14 @@ export default function ProjectDetails() {
           projectOverview ||
           `Interior design project ${projectTitle} by Bismillah Interiors in ${projectLocation}.`
         }
-        image={getImageUrl(project.cover)}
+        image={`${API_URL}/${project.cover}`}
         schema={{
           "@context": "https://schema.org",
           "@type": "CreativeWork",
           name: projectTitle,
           headline: projectTitle,
           description: projectOverview,
-          image: getImageUrl(project.cover),
+          image: `${project.cover}/${project.cover}`,
           locationCreated: {
             "@type": "Place",
             name: projectLocation,
@@ -85,7 +78,7 @@ export default function ProjectDetails() {
           <div className="project-hero-image-wrap">
             {project.cover ? (
               <img
-                src={getImageUrl(project.cover)}
+                src={`${API_URL}/${project.cover}`}
                 alt={projectTitle}
                 className="project-hero-image"
               />
@@ -135,7 +128,6 @@ export default function ProjectDetails() {
         </div>
       </section>
 
-      {/* Overview */}
       <section className="project-overview">
         <div className="project-container">
           <div className="project-section-label">
@@ -159,7 +151,6 @@ export default function ProjectDetails() {
         </div>
       </section>
 
-      {/* Gallery */}
       {gallery.length > 0 && (
         <section className="project-gallery">
           <div className="project-container">
@@ -172,7 +163,7 @@ export default function ProjectDetails() {
                   key={`${image}-${index}`}
                 >
                   <img
-                    src={getImageUrl(image)}
+                    src={`${API_URL}/${image}`}
                     alt={`${projectTitle} - ${index + 1}`}
                     loading={index > 1 ? "lazy" : "eager"}
                   />
@@ -182,8 +173,6 @@ export default function ProjectDetails() {
           </div>
         </section>
       )}
-
-      {/* Service */}
       <section className="project-service">
         <div className="project-container">
           <div className="project-service-row">
@@ -202,7 +191,6 @@ export default function ProjectDetails() {
         </div>
       </section>
 
-      {/* CTA */}
       <section className="project-cta">
         <div className="project-container">
           <div className="project-cta-line">

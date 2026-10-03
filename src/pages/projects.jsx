@@ -9,7 +9,6 @@ import { ProjectCategoryContext } from "../context/projectcategorycontext";
 export default function Projects() {
     const [activeFilter, setActiveFilter] = useState("All");
     const{projectCategory} = useContext(ProjectCategoryContext);
-    console.log("Project Category from context:", projectCategory); // Debugging line
 
     const filters = ["All", "Residential", "Commercial", "Office"];
 
@@ -24,7 +23,6 @@ export default function Projects() {
                 title="Interior Projects & Portfolio"
                 description="Explore recent residential, office, and commercial interior decoration projects by Bismillah Interiors in Lahore, Pakistan."
             />
-            {/* Hero */}
             <section
                 className="text-white d-flex align-items-center"
                 style={{
@@ -48,7 +46,7 @@ export default function Projects() {
                                 Our Work
                             </p>
 
-                            <h1 className="display-5 fw-semibold mb-2">
+                            <h1 className="display-5 fw-semibold mb-2" style={{color:"#ad8144"}}>
                                 Recent Projects
                             </h1>
 

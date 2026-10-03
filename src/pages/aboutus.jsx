@@ -61,9 +61,10 @@ export default function About() {
             <div className="col-lg-6">
               <div className="position-relative">
                 <img
-                  src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1200&q=85"
+                  src="/images/home-about.avif"
                   alt="Elegant modern interior"
                   className="img-fluid w-100"
+                  fetchPriority="low"
                   style={{
                     height: "560px",
                     objectFit: "cover",
@@ -167,7 +168,8 @@ export default function About() {
           <div className="row align-items-center g-5">
             <div className="col-lg-7">
               <img
-                src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=1400&q=85"
+                src="/images/about-section2.avif"
+                fetchPriority="low"
                 alt="Contemporary interior"
                 className="img-fluid w-100"
                 style={{
@@ -479,7 +481,7 @@ export default function About() {
 
             <div className="col-lg-7">
               <img
-                src="https://images.unsplash.com/photo-1615529182904-14819c35db37?auto=format&fit=crop&w=1400&q=85"
+                src="/images/about-sec3.avif"
                 alt="Interior wall and furniture"
                 className="img-fluid w-100"
                 style={{

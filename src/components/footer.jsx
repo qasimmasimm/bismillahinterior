@@ -10,17 +10,19 @@ import { FaUser } from "react-icons/fa";
 import { useContext } from "react";
 import { UserContext } from "../context/usercontext";
 import { getStoredUser } from "../utils/cookie";
+import { CategoriesContext } from "../context/categoriescontext";
 
 export default function Footer() {
   const { user: contextUser } = useContext(UserContext);
   const user = contextUser || getStoredUser();
+  const { categories } = useContext(CategoriesContext);
   const whatsappNumber = "923354496040";
 
+  const featuredCategries = categories?.slice(0, 6);
   return (
     <footer className="bg-dark text-light">
       <div className="container py-5">
         <div className="row g-4">
-          {/* Brand */}
           <div className="col-lg-4 col-md-6">
             <h4 className="fw-semibold mb-1" style={{ color: "#c5a059" }}>
               BISMILLAH
@@ -96,27 +98,18 @@ export default function Footer() {
             </ul>
           </div>
           <div className="col-lg-3 col-md-6">
-            <h6 className="text-uppercase mb-3 text-light">Our Services</h6>
+            <h6 className="text-uppercase mb-3 text-light">Our Categories</h6>
 
             <ul className="list-unstyled footer-links">
-              <li>
-                <Link to="/categories/wpc-imported-panels">Wall Panels</Link>
-              </li>
-              <li>
-                <Link to="/categories/ceiling-2x2">Ceiling Solutions</Link>
-              </li>
-              <li>
-                <Link to="/categories/wallpapers">Premium Wallpapers</Link>
-              </li>
-              <li>
-                <Link to="/categories/spc-flooring">Flooring</Link>
-              </li>
-              <li>
-                <Link to="/categories/pvc-uv-sheets">Decorative Finishes</Link>
-              </li>
-              <li>
-                <Link to="/contact">Custom Design Consultation</Link>
-              </li>
+              <ul className="list-unstyled footer-links">
+                {featuredCategries?.map((category) => (
+                  <li key={category._id}>
+                    <Link to={`/categories/${category._id}`}>
+                      {category.title}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
             </ul>
           </div>
           <div className="col-lg-3 col-md-6">
@@ -168,8 +161,8 @@ export default function Footer() {
             </div>
 
             <div className="col-md-6 text-md-end">
-              <small className="text-secondary">
-                Premium Interior Finishes • Lahore
+              <small className="text-light ">
+                Designed & Developed by <span className="developername fw-bold"> M. Qasim Bin Asim</span>
               </small>
             </div>
           </div>

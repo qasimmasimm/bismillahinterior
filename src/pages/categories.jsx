@@ -37,7 +37,7 @@ export default function Categories() {
             <div className="col-lg-5">
               <div className="categories-hero-image rounded-4 overflow-hidden shadow-sm">
                 <img
-                  src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=1200&q=85"
+                  src="/images/banner03.avif"
                   alt="Elegant interior design"
                   className="w-100 h-100 object-fit-cover"
                 />

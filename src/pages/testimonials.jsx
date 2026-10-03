@@ -12,7 +12,7 @@ export default function Testimonials() {
       review:
         "Excellent quality and professional installation. The wall panels completely changed the look of our living room. We are extremely happy with the result.",
       image:
-        "https://images.unsplash.com/photo-1618220179428-22790b461013?auto=format&fit=crop&w=1000&q=80",
+        "/images/home-cta.avif",
     },
     {
       name: "Sarah Ali",
@@ -20,15 +20,14 @@ export default function Testimonials() {
       review:
         "Great designs and excellent finishing. The team was professional and completed the work exactly as we expected.",
       image:
-        "https://images.unsplash.com/photo-1615529182904-14819c35db37?auto=format&fit=crop&w=1000&q=80",
+        "/images/banner1.avif",
     },
     {
       name: "Ahmed Farooq",
       location: "Lahore",
       review:
         "Very helpful staff and a wide range of designs. The wallpapers we selected look beautiful in our home.",
-      image:
-        "https://images.unsplash.com/photo-1617104678098-de229db51175?auto=format&fit=crop&w=1000&q=80",
+      image:"/images/about-sec3.avif",
     },
     {
       name: "Nadia Usman",
@@ -36,7 +35,7 @@ export default function Testimonials() {
       review:
         "The finishing was excellent and the quality was impressive. The entire room has a completely different feel now.",
       image:
-        "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=1000&q=80",
+        "/images/home-about.avif",
     },
   ];
 
@@ -56,7 +55,6 @@ export default function Testimonials() {
         title="Client Reviews & Experiences"
         description="Read client testimonials and reviews for Bismillah Interiors in Lahore. Discover customer experiences with our wall paneling, wallpapers, and flooring work."
       />
-      {/* Hero Banner */}
       <section
         className="text-white d-flex align-items-center"
         style={{
@@ -77,7 +75,7 @@ export default function Testimonials() {
                 What Our Clients Say
               </p>
 
-              <h1 className="display-5 fw-semibold mb-2">
+              <h1 className="display-5 fw-semibold mb-2 " style={{color:"#ad8144"}}>
                 Real Stories. Happy Homes.
               </h1>
 
@@ -89,8 +87,6 @@ export default function Testimonials() {
           </div>
         </div>
       </section>
-
-      {/* Featured Review Carousel */}
       <section
         className="container position-relative "
         style={{ marginTop: "-55px" }}
@@ -100,7 +96,6 @@ export default function Testimonials() {
           style={{ border: "1px solid #e6dfd4" }}
         >
           <div className="row g-0 align-items-stretch">
-            {/* Image */}
             <div className="col-lg-6">
               <img
                 src={currentReview.image}
@@ -109,8 +104,6 @@ export default function Testimonials() {
                 style={{ maxHeight: "430px" }}
               />
             </div>
-
-            {/* Review */}
             <div className="col-lg-6 " style={{}}>
               <div className="p-4 p-lg-5 h-100 d-flex flex-column justify-content-center">
                 <div className="fs-2 mb-2" style={{ color: "#ad8144" }}>
@@ -137,12 +130,9 @@ export default function Testimonials() {
                 <h6 className="mb-1 fw-semibold" style={{ color: "#292621" }}>
                   {currentReview.name}
                 </h6>
-
                 <small className="text-secondary">
                   {currentReview.location}
                 </small>
-
-                {/* Carousel Controls */}
                 <div className="d-flex align-items-center justify-content-between mt-4">
                   <button
                     type="button"
@@ -158,7 +148,6 @@ export default function Testimonials() {
                   >
                     ←
                   </button>
-
                   <div className="d-flex gap-2">
                     {reviews.map((_, index) => (
                       <button
@@ -198,8 +187,6 @@ export default function Testimonials() {
           </div>
         </div>
       </section>
-
-      {/* More Reviews */}
       <section className="container py-5">
         <div className="row justify-content-center text-center mb-4">
           <div className="col-lg-7">
@@ -269,14 +256,13 @@ export default function Testimonials() {
           ))}
         </div>
       </section>
-
-      {/* Project + Review */}
       <section className="py-5" style={{ backgroundColor: "#eee8de" }}>
         <div className="container">
           <div className="row g-0 bg-white rounded-4 overflow-hidden shadow-sm align-items-center">
             <div className="col-lg-6">
               <img
-                src="https://images.unsplash.com/photo-1615529328331-f8917597711f?auto=format&fit=crop&w=1200&q=85"
+                src="/images/banner1.avif"
+                fetchPriority="low"
                 alt="Elegant interior project"
                 className="img-fluid w-100 object-fit-cover"
                 style={{ height: "330px" }}
@@ -325,14 +311,12 @@ export default function Testimonials() {
           </div>
         </div>
       </section>
-
-      {/* CTA */}
       <section
         className="text-white text-center"
         style={{
           backgroundColor: "#292621",
           backgroundImage:
-            "linear-gradient(rgba(30,27,23,.78), rgba(30,27,23,.78)), url('https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1800&q=85')",
+            "linear-gradient(rgba(30,27,23,.78), rgba(30,27,23,.78)), url('/images/banner03.avif')",
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
