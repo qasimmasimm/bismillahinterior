@@ -1,12 +1,14 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
 import { toast } from "react-toastify";
 import { getToken } from "../../utils/cookie";
+import { CategoriesContext } from "../../context/categoriescontext";
 
 export default function AddCategories() {
+  const {setCategories}=useContext(CategoriesContext)
   const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -57,8 +59,9 @@ export default function AddCategories() {
       if (!response.ok) {
         throw new Error(result.message || "Failed to create category");
       }
+       const newCategory = result?.content || result;
 
-      //   toast.inf("Category created successfully!");
+      setCategories((prev) => [newCategory, ...prev]);
       handleClose();
 
       reset();

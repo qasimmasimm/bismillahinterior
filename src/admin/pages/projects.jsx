@@ -1,12 +1,14 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { getToken } from "../../utils/cookie";
 import { toast } from "react-toastify";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
+import { ProjectContext } from "../../context/projectcontext";
 
 export default function AddProjects() {
+  const { setProject } = useContext(ProjectContext);
   const API_URL = import.meta.env.VITE_API_URL;
 
   const [loading, setLoading] = useState(false);
@@ -70,6 +72,9 @@ export default function AddProjects() {
       if (!response.ok) {
         throw new Error(result?.message || "Failed to create project");
       }
+      const newProject = result?.content || result;
+
+      setProject((prev) => [newProject, ...prev]);
       reset();
     } catch (error) {
       console.error("Create project error:", error);
