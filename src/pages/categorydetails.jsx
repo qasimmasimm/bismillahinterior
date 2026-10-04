@@ -416,7 +416,7 @@ console.log("Products:", productList);
             </div>
 
             <Link
-              to={`/products?category=${category._id}`}
+              to={`/products?category=${category.title}`}
               className="btn btn-outline-dark btn-sm rounded-pill px-3 py-2 mt-2 mt-sm-0 fw-semibold"
             >
               Filter in All Products
