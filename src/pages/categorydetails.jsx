@@ -608,6 +608,7 @@ console.log("Products:", productList);
               WhatsApp Us
             </a>
           </div>
+          <p>demo </p>
         </div>
       </section>
     </main>
