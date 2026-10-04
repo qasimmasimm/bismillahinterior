@@ -1,204 +1,556 @@
-import { useState } from "react";
+import { useContext, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import projects from "../data/projectsdata";
 import SEO from "../components/seo";
-import {useContext} from 'react'
+import { FaSearch } from "react-icons/fa";
 import { ProjectContext } from "../context/projectcontext";
 import { ProjectCategoryContext } from "../context/projectcategorycontext";
 
 export default function Projects() {
-    const [activeFilter, setActiveFilter] = useState("All");
-    const{projectCategory} = useContext(ProjectCategoryContext);
+  const [activeFilter, setActiveFilter] = useState("All");
+  const [searchQuery, setSearchQuery] = useState("");
 
-    const filters = ["All", "Residential", "Commercial", "Office"];
+  const { Project } = useContext(ProjectContext);
+  const { projcatgeory } = useContext(ProjectCategoryContext);
 
-    const filteredProjects =
-        activeFilter === "All"
-            ? projects
-            : projects.filter((project) => project.scope === activeFilter);
+  const projectList = Array.isArray(Project) ? Project : [];
+  const categoryList = Array.isArray(projcatgeory)
+    ? projcatgeory
+    : [];
+
+  const filters = useMemo(() => {
+    return [
+      {
+        _id: "all",
+        title: "All",
+      },
+      ...categoryList,
+    ];
+  }, [categoryList]);
+
+  const getProjectCategoryId = (project) => {
+    if (!project?.category) return "";
+
+    if (typeof project.category === "object") {
+      return (
+        project.category?._id ||
+        project.category?.id ||
+        project.category?.slug ||
+        ""
+      );
+    }
+
+    return project.category;
+  };
+
+  const getProjectCategoryTitle = (project) => {
+    if (!project?.category) return "";
+
+    if (typeof project.category === "object") {
+      return (
+        project.category?.title ||
+        project.category?.name ||
+        project.category?.slug ||
+        ""
+      );
+    }
+
+    const matchedCategory = categoryList.find(
+      (category) =>
+        String(category?._id) === String(project.category) ||
+        String(category?.id) === String(project.category) ||
+        String(category?.slug) === String(project.category)
+    );
 
     return (
-        <>
-            <SEO
-                title="Interior Projects & Portfolio"
-                description="Explore recent residential, office, and commercial interior decoration projects by Bismillah Interiors in Lahore, Pakistan."
-            />
-            <section
-                className="text-white d-flex align-items-center"
-                style={{
-                    minHeight: "280px",
-                    backgroundImage:
-                        "linear-gradient(rgba(35,31,26,.58), rgba(35,31,26,.58)), url('https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=1800&q=85')",
-                    backgroundSize: "cover",
-                    backgroundPosition: "center",
-                }}
-            >
-                <div className="container">
-                    <div className="row">
-                        <div className="col-lg-7">
-                            <p
-                                className="text-uppercase small fw-semibold mb-2"
-                                style={{
-                                    color: "#b58a4b",
-                                    letterSpacing: "2px",
-                                }}
-                            >
-                                Our Work
-                            </p>
-
-                            <h1 className="display-5 fw-semibold mb-2" style={{color:"#ad8144"}}>
-                                Recent Projects
-                            </h1>
-
-                            <p className="mb-0 text-white-50">
-                                Explore some of our recent interior design and
-                                installation projects across Lahore.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            {/* Projects */}
-            <section
-                className="py-5"
-                style={{ backgroundColor: "#f8f5ef" }}
-            >
-                <div className="container">
-
-                    {/* Filters */}
-                    <div className="d-flex flex-wrap justify-content-center gap-2 mb-4">
-                        {filters.map((filter) => (
-                            <button
-                                key={filter}
-                                type="button"
-                                onClick={() => setActiveFilter(filter)}
-                                className="btn rounded-pill px-4"
-                                style={{
-                                    backgroundColor:
-                                        activeFilter === filter
-                                            ? "#ad8144"
-                                            : "#ffffff",
-                                    color:
-                                        activeFilter === filter
-                                            ? "#ffffff"
-                                            : "#292621",
-                                    border:
-                                        activeFilter === filter
-                                            ? "1px solid #ad8144"
-                                            : "1px solid #ddd5ca",
-                                }}
-                            >
-                                {filter}
-                            </button>
-                        ))}
-                    </div>
-
-                    {/* Cards */}
-                    <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-                        {filteredProjects.map((project) => (
-                            <div className="col" key={project.id}>
-                                <div
-                                    className="card h-100 bg-white rounded-4 overflow-hidden shadow-sm"
-                                    style={{
-                                        border: "1px solid #e5ddd2",
-                                    }}
-                                >
-                                    <img
-                                        src={project.cover}
-                                        alt={project.title}
-                                        className="card-img-top w-100 object-fit-cover"
-                                        style={{ height: "235px" }}
-                                    />
-
-                                    <div className="card-body p-4 d-flex flex-column">
-
-                                        <div className="d-flex justify-content-between align-items-center mb-2">
-                                            <small
-                                                className="text-uppercase fw-semibold"
-                                                style={{
-                                                    color: "#ad8144",
-                                                    letterSpacing: "1px",
-                                                }}
-                                            >
-                                                {project.scope}
-                                            </small>
-
-                                            <small className="text-secondary">
-                                                {project.category}
-                                            </small>
-                                        </div>
-
-                                        <h4
-                                            className="h5 fw-semibold mb-2"
-                                            style={{ color: "#292621" }}
-                                        >
-                                            {project.title}
-                                        </h4>
-
-                                        <p className="text-secondary small mb-3">
-                                            {project.location}
-                                        </p>
-
-                                        {/* <p className="text-secondary mb-4">
-                                            {project.overview}
-                                        </p> */}
-
-                                        <Link
-                                            to={`/projects/${project.id}`}
-                                            className="text-decoration-none mt-auto fw-semibold"
-                                            style={{ color: "#292621" }}
-                                        >
-                                            View Details
-                                            <span className="ms-2">→</span>
-                                        </Link>
-
-                                    </div>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-
-                    {filteredProjects.length === 0 && (
-                        <div className="text-center py-5">
-                            <h5>No projects found.</h5>
-                        </div>
-                    )}
-
-                </div>
-            </section>
-
-            {/* CTA */}
-            <section
-                className="text-white text-center"
-                style={{
-                    backgroundImage:
-                        "linear-gradient(rgba(35,31,26,.78), rgba(35,31,26,.78)), url('https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1800&q=85')",
-                    backgroundSize: "cover",
-                    backgroundPosition: "center",
-                }}
-            >
-                <div className="container py-5">
-                    <h2 className="fw-semibold mb-2">
-                        Have a Project in Mind?
-                    </h2>
-
-                    <p className="text-white-50 mb-4">
-                        Let's create a space that reflects your style.
-                    </p>
-
-                    <Link
-                        to="/contact"
-                        className="btn px-4"
-                        style={{
-                            backgroundColor: "#ad8144",
-                            color: "#fff",
-                        }}
-                    >
-                        Start Your Project
-                    </Link>
-                </div>
-            </section>
-        </>
+      matchedCategory?.title ||
+      matchedCategory?.name ||
+      matchedCategory?.slug ||
+      String(project.category)
     );
+  };
+
+  const filteredProjects = useMemo(() => {
+    const query = searchQuery.trim().toLowerCase();
+
+    return projectList.filter((project) => {
+      const categoryId = getProjectCategoryId(project);
+      const categoryTitle = getProjectCategoryTitle(project);
+
+      const matchesCategory =
+        activeFilter === "All" ||
+        String(categoryId).toLowerCase() ===
+          String(activeFilter).toLowerCase() ||
+        String(categoryTitle).toLowerCase() ===
+          String(activeFilter).toLowerCase();
+
+      const title = project.title || "";
+      const location = project.location || "";
+      const scope = project.scope || "";
+      const overview = project.overview || "";
+
+      const matchesSearch =
+        query === "" ||
+        title.toLowerCase().includes(query) ||
+        location.toLowerCase().includes(query) ||
+        scope.toLowerCase().includes(query) ||
+        overview.toLowerCase().includes(query) ||
+        categoryTitle.toLowerCase().includes(query);
+
+      return matchesCategory && matchesSearch;
+    });
+  }, [
+    projectList,
+    categoryList,
+    activeFilter,
+    searchQuery,
+  ]);
+
+  const getCategoryProjectCount = (category) => {
+    return projectList.filter((project) => {
+      const categoryId = getProjectCategoryId(project);
+      const categoryTitle = getProjectCategoryTitle(project);
+
+      return (
+        String(categoryId).toLowerCase() ===
+          String(category?._id).toLowerCase() ||
+        String(categoryId).toLowerCase() ===
+          String(category?.id).toLowerCase() ||
+        String(categoryId).toLowerCase() ===
+          String(category?.slug).toLowerCase() ||
+        String(categoryTitle).toLowerCase() ===
+          String(category?.title).toLowerCase()
+      );
+    }).length;
+  };
+
+  const handleCategoryChange = (value) => {
+    setActiveFilter(value);
+  };
+
+  const resetFilters = () => {
+    setActiveFilter("All");
+    setSearchQuery("");
+  };
+
+  const API_URL = import.meta.env.VITE_API_URL;
+
+  return (
+    <>
+      <SEO
+        title="Our Projects | Bismillah Interiors"
+        description="Explore our completed interior projects including wall panels, ceilings, flooring, wallpapers and decorative interior solutions."
+      />
+
+      <section
+        className="py-5"
+        style={{
+          minHeight: "100vh",
+          backgroundColor: "#f5f0e8",
+        }}
+      >
+        <div className="container">
+
+          {/* Header */}
+          <div className="text-center mb-5">
+            <span
+              className="text-uppercase fw-semibold"
+              style={{
+                color: "#ad8144",
+                letterSpacing: "2px",
+                fontSize: "12px",
+              }}
+            >
+              Our Work
+            </span>
+
+            <h1
+              className="display-4 fw-semibold mt-2 mb-3"
+              style={{
+                color: "#292621",
+              }}
+            >
+              Explore Our Projects
+            </h1>
+
+            <p
+              className="text-secondary mx-auto mb-0"
+              style={{
+                maxWidth: "700px",
+              }}
+            >
+              Explore our completed interior projects and discover
+              how our materials and finishes transform spaces.
+            </p>
+          </div>
+
+          {/* Search & Filters */}
+          <div
+            className="bg-white p-4 rounded-4 shadow-sm mb-5 border"
+            style={{
+              borderColor: "#e5ddd2",
+            }}
+          >
+            <div className="row g-3 align-items-center mb-4">
+
+              {/* Search */}
+              <div className="col-12 col-md-6">
+                <div className="input-group">
+
+                  <span
+                    className="input-group-text bg-light border-end-0"
+                    style={{
+                      borderColor: "#ddd5ca",
+                    }}
+                  >
+                    <FaSearch />
+                  </span>
+
+                  <input
+                    type="text"
+                    className="form-control bg-light border-start-0 ps-0"
+                    style={{
+                      borderColor: "#ddd5ca",
+                      fontSize: "14px",
+                    }}
+                    placeholder="Search projects, locations, or categories..."
+                    value={searchQuery}
+                    onChange={(e) =>
+                      setSearchQuery(e.target.value)
+                    }
+                  />
+
+                  {searchQuery && (
+                    <button
+                      className="btn btn-outline-secondary"
+                      type="button"
+                      onClick={() => setSearchQuery("")}
+                      style={{
+                        fontSize: "12px",
+                      }}
+                    >
+                      Clear
+                    </button>
+                  )}
+                </div>
+              </div>
+
+              {/* Results */}
+              <div className="col-12 col-md-6 text-md-end">
+                <small className="text-secondary fw-semibold">
+                  Showing {filteredProjects.length} of{" "}
+                  {projectList.length} projects
+                  {activeFilter !== "All" &&
+                    ` in ${
+                      categoryList.find(
+                        (category) =>
+                          String(category?._id) ===
+                            String(activeFilter) ||
+                          String(category?.id) ===
+                            String(activeFilter) ||
+                          String(category?.slug) ===
+                            String(activeFilter)
+                      )?.title || activeFilter
+                    }`}
+                </small>
+              </div>
+            </div>
+
+            {/* Category Badges */}
+            <div className="d-flex flex-wrap gap-2">
+
+              {filters.map((category) => {
+                const isAll = category.title === "All";
+
+                const filterValue = isAll
+                  ? "All"
+                  : category._id ||
+                    category.id ||
+                    category.slug ||
+                    category.title;
+
+                const categoryTitle =
+                  category.title || "";
+
+                const count = isAll
+                  ? projectList.length
+                  : getCategoryProjectCount(category);
+
+                const isActive =
+                  String(activeFilter).toLowerCase().trim() ===
+                  String(filterValue).toLowerCase().trim();
+
+                return (
+                  <button
+                    key={
+                      category._id ||
+                      category.id ||
+                      category.slug ||
+                      category.title
+                    }
+                    type="button"
+                    onClick={() =>
+                      handleCategoryChange(filterValue)
+                    }
+                    className="btn btn-sm rounded-pill px-3 py-2 fw-semibold"
+                    style={{
+                      backgroundColor: isActive
+                        ? "#ad8144"
+                        : "#ffffff",
+                      color: isActive
+                        ? "#ffffff"
+                        : "#292621",
+                      border: isActive
+                        ? "1px solid #ad8144"
+                        : "1px solid #ddd5ca",
+                      fontSize: "13px",
+                    }}
+                  >
+                    {categoryTitle}
+
+                    {count > 0 && (
+                      <span className="ms-1">
+                        ({count})
+                      </span>
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Results Count / Reset */}
+          <div className="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+            <div>
+              <span
+                className="small"
+                style={{
+                  color: "#6c675f",
+                }}
+              >
+                Showing{" "}
+                <strong
+                  style={{
+                    color: "#292621",
+                  }}
+                >
+                  {filteredProjects.length}
+                </strong>{" "}
+                {filteredProjects.length === 1
+                  ? "project"
+                  : "projects"}
+              </span>
+            </div>
+
+            {(activeFilter !== "All" || searchQuery) && (
+              <button
+                type="button"
+                onClick={resetFilters}
+                className="btn btn-sm rounded-pill px-3"
+                style={{
+                  color: "#ad8144",
+                  border: "1px solid #ad8144",
+                  backgroundColor: "transparent",
+                }}
+              >
+                Reset Filters
+              </button>
+            )}
+          </div>
+
+          {/* Projects */}
+          {filteredProjects.length > 0 ? (
+            <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+              {filteredProjects.map((project) => {
+                const projectId =
+                  project._id || project.id;
+
+                const image =
+                  project.cover ||
+                  project.image ||
+                  "/images/ooo.avif";
+
+                const imagePath = image
+                  .replaceAll("\\", "/")
+                  .replace(/^\/+/, "");
+
+                const categoryTitle =
+                  getProjectCategoryTitle(project);
+
+                return (
+                  <div
+                    className="col"
+                    key={projectId}
+                  >
+                    <div
+                      className="h-100 bg-white overflow-hidden"
+                      style={{
+                        borderRadius: "16px",
+                        border: "1px solid #e4ddd3",
+                      }}
+                    >
+
+                      {/* Image */}
+                      <div
+                        className="position-relative overflow-hidden"
+                        style={{
+                          height: "270px",
+                        }}
+                      >
+                        <img
+                          src={`${API_URL}/${imagePath}`}
+                          alt={
+                            project.title ||
+                            "Interior project"
+                          }
+                          className="w-100 h-100"
+                          style={{
+                            objectFit: "cover",
+                          }}
+                        />
+
+                        {categoryTitle && (
+                          <span
+                            className="position-absolute top-0 start-0 m-3 px-3 py-2 rounded-pill"
+                            style={{
+                              backgroundColor:
+                                "rgba(41, 38, 33, 0.88)",
+                              color: "#ffffff",
+                              fontSize: "11px",
+                              letterSpacing: "0.5px",
+                            }}
+                          >
+                            {categoryTitle}
+                          </span>
+                        )}
+                      </div>
+
+                      {/* Content */}
+                      <div className="p-4">
+
+                        <h3
+                          className="h5 fw-semibold mb-2"
+                          style={{
+                            color: "#292621",
+                            fontFamily:
+                              "Georgia, serif",
+                          }}
+                        >
+                          {project.title ||
+                            "Untitled Project"}
+                        </h3>
+
+                        {project.location && (
+                          <p
+                            className="small mb-3"
+                            style={{
+                              color: "#ad8144",
+                            }}
+                          >
+                            {project.location}
+                          </p>
+                        )}
+
+                        {project.overview && (
+                          <p
+                            className="small text-secondary mb-3"
+                            style={{
+                              display:
+                                "-webkit-box",
+                              WebkitLineClamp: 1,
+                              WebkitBoxOrient:
+                                "vertical",
+                              overflow: "hidden",
+                              textOverflow:
+                                "ellipsis",
+                            }}
+                          >
+                            {project.overview}
+                          </p>
+                        )}
+
+                        {project.scope && (
+                          <p
+                            className="small text-secondary mb-3"
+                            style={{
+                              display:
+                                "-webkit-box",
+                              WebkitLineClamp: 1,
+                              WebkitBoxOrient:
+                                "vertical",
+                              overflow: "hidden",
+                              textOverflow:
+                                "ellipsis",
+                            }}
+                          >
+                            {project.scope}
+                          </p>
+                        )}
+
+                        <Link
+                          to={`/projects/${projectId}`}
+                          className="text-decoration-none fw-semibold small"
+                          style={{
+                            color: "#ad8144",
+                          }}
+                        >
+                          View Project →
+                        </Link>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          ) : (
+            /* Empty State */
+            <div
+              className="text-center py-5 px-4 bg-white rounded-4 border"
+              style={{
+                borderColor: "#e4ddd3",
+              }}
+            >
+              <div className="py-4">
+
+                <h3
+                  className="h4 fw-semibold mb-2"
+                  style={{
+                    color: "#292621",
+                    fontFamily:
+                      "Georgia, serif",
+                  }}
+                >
+                  No Projects Available
+                </h3>
+
+                <p
+                  className="text-secondary mb-4 mx-auto"
+                  style={{
+                    maxWidth: "500px",
+                  }}
+                >
+                  No projects are available for
+                  this category or search. Please
+                  try another category or reset
+                  your filters.
+                </p>
+
+                <button
+                  type="button"
+                  onClick={resetFilters}
+                  className="btn rounded-pill px-4 py-2 fw-semibold"
+                  style={{
+                    backgroundColor: "#292621",
+                    color: "#f5f0e8",
+                    border: "1px solid #292621",
+                  }}
+                >
+                  View All Projects
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+      </section>
+    </>
+  );
 }

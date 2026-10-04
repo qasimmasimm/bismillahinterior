@@ -162,7 +162,11 @@ export default function Footer() {
 
             <div className="col-md-6 text-md-end">
               <small className="text-light ">
-                Designed & Developed by <span className="developername fw-bold"> M. Qasim Bin Asim</span>
+                Designed & Developed by <a className="developername fw-bold text-decoration-none"
+                 href="https://wa.me/923295810323"
+                target="_blank"
+                rel="noreferrer"
+              > M. Qasim Bin Asim</a>
               </small>
             </div>
           </div>

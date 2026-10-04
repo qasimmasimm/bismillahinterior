@@ -220,7 +220,7 @@ export default function Products() {
   };
 
   return (
-    <main className="py-5" style={{ backgroundColor: "#fcfaf6" }}>
+    <main className="py-5" style={{ backgroundColor: "#f5f0e8" }}>
       <SEO
         title={
           selectedCategory === "All"
