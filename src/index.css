@@ -352,6 +352,33 @@ small {
   height: 100%;
 }
 
+
+
+.hero-carousel .carousel-indicators {
+  bottom: 20px;
+  margin-bottom: 0;
+}
+
+.hero-carousel .carousel-indicators [data-bs-target] {
+  width: 10px;
+  height: 10px;
+  margin: 0 5px;
+  border: 0;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.5);
+  opacity: 1;
+  transition: all 0.3s ease;
+}
+
+.hero-carousel .carousel-indicators .active {
+  width: 30px;
+  border-radius: 10px;
+  background-color: #fff;
+}
+.hero-carousel .carousel-control-next {
+  right: 20px;
+}
+
 .home-hero {
   height: 78vh;
   min-height: 560px;
